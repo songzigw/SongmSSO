@@ -3,7 +3,7 @@
  *
  */
 
-package cn.songm.sso;
+package songm.sso;
 
 import java.util.Date;
 import java.util.HashMap;

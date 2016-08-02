@@ -3,7 +3,7 @@
  *
  */
 
-package cn.songm.sso;
+package songm.sso;
 
 /**
  * 客户端信息描述
