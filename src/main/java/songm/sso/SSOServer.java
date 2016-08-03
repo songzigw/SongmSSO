@@ -12,16 +12,16 @@ import java.net.Socket;
 import org.apache.log4j.Logger;
 
 /**
- * 单点服务器
+ * 单点登入服务器
  *
  * @author zhangsong
  * @since 0.1, 2016-8-2
  * @version 0.1
  * 
  */
-public class Server {
+public class SSOServer {
 
-    private static Logger logger = Logger.getLogger(Server.class);
+    private static Logger logger = Logger.getLogger(SSOServer.class);
 
     /** 服务器名称 */
     private String name;
@@ -30,7 +30,7 @@ public class Server {
 
     private ServerSocket server;
 
-    public Server() {
+    public SSOServer() {
         super();
         this.name = Config.getInstance().getServerName();
         this.port = Config.getInstance().getServerPort();
@@ -53,7 +53,7 @@ public class Server {
             // 等待连接请求
             Socket client = server.accept();
             // 为连接请求分配一个线程
-            (new ServerThread(client)).start();
+            (new BackServer(client)).start();
         } while (true);
     }
 

@@ -23,13 +23,13 @@ public class Session {
 	public static final long TIME_OUT = 1000 * 24 * 60 * 60;
 
 	/** 客户端与服务端会话唯一标示符 */
-	public static final String CLIENT_KEY = "songm_sid";
+	public static final String CLIENT_KEY = "songm_sso_key";
 
 	/** 会话唯一标示 */
 	private String id;
 
 	/** 会话创建时间 */
-	private Date creationTime;
+	private Date createdTime;
 
 	/** 会话访问时间 */
 	private Date accessTime;
@@ -38,8 +38,8 @@ public class Session {
 	
 	public Session(String sessionId) {
 		this.id = sessionId;
-		creationTime = new Date();
-		accessTime = creationTime;
+		createdTime = new Date();
+		accessTime = createdTime;
 	}
 
 	public String getId() {
@@ -64,16 +64,16 @@ public class Session {
 		attribute.put(name, value);
 	}
 
-	public void setCreationTime(Date creationTime) {
-		this.creationTime = creationTime;
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public void setAccessTime(Date accessTime) {
 		this.accessTime = accessTime;
 	}
 
-	public long getCreationTime() {
-		return creationTime.getTime();
+	public long getCreatedTime() {
+		return createdTime.getTime();
 	}
 
 	public long getAccessTime() {
