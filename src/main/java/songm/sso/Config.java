@@ -26,6 +26,8 @@ public class Config {
 
     private static Logger logger = Logger.getLogger(Config.class);
 
+    public static final String VERSION = "0.1";
+
     /** 属性文件全名 */
     private static final String PFILE = "config-songmsso.properties";
 
@@ -88,15 +90,6 @@ public class Config {
     public final Object getItem(String key) {
         loadFile();
         return props.getProperty(key);
-    }
-
-    /**
-     * 获取系统的版本号
-     * 
-     * @return
-     */
-    public String getVersion() {
-        return (String) this.getItem("version");
     }
 
     public String getClientKey() {
