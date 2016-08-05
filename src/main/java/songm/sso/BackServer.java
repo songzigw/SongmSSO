@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
+import com.google.gson.Gson;
+
 /**
  * 后台（后端）应用服务
  *
@@ -19,6 +21,8 @@ import java.net.Socket;
  * 
  */
 public class BackServer extends Thread {
+
+    private static Gson gson = new Gson();
 
     // 服务器与客户端链接
     private Socket socket;
@@ -40,5 +44,6 @@ public class BackServer extends Thread {
         ps = new PrintStream(socket.getOutputStream()); 
         // 读取收到的信息，第一条信息是客户端的账号信息
         String clientInfo = br.readLine();
+        Account acc = gson.fromJson(clientInfo, Account.class);
     }
 }
