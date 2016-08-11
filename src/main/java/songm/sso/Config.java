@@ -92,12 +92,12 @@ public class Config {
         return props.getProperty(key);
     }
 
-    public String getClientKey() {
-        return (String) this.getItem("client.key");
+    public String getServerKey() {
+        return (String) this.getItem("server.key");
     }
 
-    public String getClientSecret() {
-        return (String) this.getItem("client.secret");
+    public String getServerSecret() {
+        return (String) this.getItem("server.secret");
     }
 
     public String getServerName() {

@@ -3,7 +3,7 @@ package songm.sso.service;
 import songm.sso.entity.Account;
 
 
-public interface AuthService {
+public interface AccountService {
 
     boolean auth(Account account);
 

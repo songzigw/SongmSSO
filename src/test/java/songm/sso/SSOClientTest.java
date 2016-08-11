@@ -39,8 +39,7 @@ public class SSOClientTest {
             ChannelFuture f = b.connect().sync();
 
             Account acc = new Account();
-            acc.setKey("admin");
-            acc.setSecret("123456");
+            acc.setServerKey("admin");
             Protocol proto = new Protocol();
             proto.setVersion((short) 1);
             proto.setOperation(0);

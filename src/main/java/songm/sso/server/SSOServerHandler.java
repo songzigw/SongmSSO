@@ -14,7 +14,7 @@ import songm.sso.entity.Account;
 import songm.sso.entity.Protocol;
 import songm.sso.operation.Operation;
 import songm.sso.operation.SSOOperation;
-import songm.sso.service.AuthService;
+import songm.sso.service.AccountService;
 
 @Component
 @ChannelHandler.Sharable
@@ -26,7 +26,7 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
     @Autowired
     private SSOOperation ssoOperation;
     @Autowired
-    private AuthService authService;
+    private AccountService authService;
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Protocol pro)

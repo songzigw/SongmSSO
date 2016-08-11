@@ -10,11 +10,8 @@ import org.springframework.stereotype.Component;
 import songm.sso.JsonUtils;
 import songm.sso.entity.Account;
 import songm.sso.entity.Protocol;
-import songm.sso.service.AuthService;
+import songm.sso.service.AccountService;
 
-/**
- * Created by Tony on 4/14/16.
- */
 @Component
 public class AuthOperation extends AbstractOperation {
 
@@ -24,7 +21,7 @@ public class AuthOperation extends AbstractOperation {
     public static final int OP_REPLY = 1;
 
     @Autowired
-    private AuthService authService;
+    private AccountService accountService;
 
     @Override
     public Integer op() {
@@ -36,7 +33,7 @@ public class AuthOperation extends AbstractOperation {
         Account acc = JsonUtils.fromJson(pro.getBody(), Account.class);
 
         // check token
-        if (authService.auth(acc)) {
+        if (accountService.auth(acc)) {
             // put auth token
             setAccount(ch, acc);
             logger.debug("auth ok");
