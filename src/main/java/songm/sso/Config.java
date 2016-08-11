@@ -100,11 +100,6 @@ public class Config {
         return (String) this.getItem("client.secret");
     }
 
-    public int getServerPort() {
-        String p = (String) getItem("server.prot");
-        return Integer.parseInt(p);
-    }
-    
     public String getServerName() {
         return (String) getItem("server.name");
     }
