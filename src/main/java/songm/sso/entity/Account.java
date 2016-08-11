@@ -1,4 +1,4 @@
-package songm.sso;
+package songm.sso.entity;
 
 public class Account {
     private String key;

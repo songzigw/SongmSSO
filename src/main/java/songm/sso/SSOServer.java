@@ -1,60 +1,40 @@
 /*
  * Copyright (c) 2016, zhangsong <songm.cn>.
  *
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package songm.sso;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import songm.sso.exception.SSOException;
 
-import org.apache.log4j.Logger;
 
 /**
- * 单点登入服务器
+ * 单点登入服务接口
  *
- * @author zhangsong
- * @since 0.1, 2016-8-2
+ * @author  zhangsong
+ * @since   0.1, 2016-8-2
  * @version 0.1
  * 
  */
-public class SSOServer {
+public interface SSOServer {
 
-    private static Logger logger = Logger.getLogger(SSOServer.class);
+    void start() throws SSOException;
 
-    /** 服务器名称 */
-    private String name;
-    /** 服务器端口 */
-    private int port;
+    void restart() throws SSOException;
 
-    private ServerSocket server;
-
-    public SSOServer() {
-        super();
-        this.name = Config.getInstance().getServerName();
-        this.port = Config.getInstance().getServerPort();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void start() throws IOException {
-        // 显示服务名字和端口号
-        logger.info(name + " server start, port: " + port);
-
-        server = new ServerSocket(port);
-        do {
-            // 等待连接请求
-            Socket client = server.accept();
-            // 为连接请求分配一个线程
-            (new BackServer(client)).start();
-        } while (true);
-    }
-
+    void shutdown();
 }
