@@ -5,7 +5,7 @@ import songm.sso.entity.Protocol;
 
 public interface Operation {
 
-    Integer op();
+    public int operation();
 
     void action(Channel ctx, Protocol pro) throws Exception;
 

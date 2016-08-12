@@ -21,7 +21,8 @@ import java.util.List;
 @EnableCaching
 public class CachingConfig extends CachingConfigurerSupport {
 
-    public static final String AUTH_CLIENT = "CLIENT";
+    public static final String BACKSTAGE_ITEMS = "backstage_items";
+    public static final String SESSION_ITEMS = "session_items";
 
     @Bean
     @Override
@@ -30,7 +31,7 @@ public class CachingConfig extends CachingConfigurerSupport {
 
         List<Cache> caches = new ArrayList<Cache>();
         // Ehcache/Redis
-        caches.add(new ConcurrentMapCache(AUTH_CLIENT, false));
+        caches.add(new ConcurrentMapCache(BACKSTAGE_ITEMS, false));
         cacheManager.setCaches(caches);
 
         return cacheManager;

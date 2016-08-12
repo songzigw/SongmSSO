@@ -4,7 +4,7 @@ import java.util.Date;
 
 import songm.sso.Sequence;
 
-public class Account {
+public class Backstage {
 
     private String serverKey;
     private String nonce;
@@ -12,14 +12,14 @@ public class Account {
     private String signature;
     private Date created;
 
-    /** 授权客户唯一标识 */
-    private String clientId;
-    /** 授权客户会话信息 */
+    /** 后台唯一标识 */
+    private String backId;
+    /** 客户会话信息 */
     private String sessionId;
 
-    public Account() {
+    public Backstage() {
         this.created = new Date();
-        this.clientId = Sequence.getInstance().getSequence(12);
+        this.backId = Sequence.getInstance().getSequence(12);
     }
 
     public String getServerKey() {
@@ -58,8 +58,8 @@ public class Account {
         return created;
     }
 
-    public String getClientId() {
-        return clientId;
+    public String getBackId() {
+        return backId;
     }
 
     public String getSessionId() {

@@ -29,14 +29,14 @@ public class TcpProtocolCodec extends MessageToMessageCodec<ByteBuf, Protocol> {
             byteBuf.writeShort(Protocol.HEADER_LENGTH);
             byteBuf.writeShort(Protocol.VERSION);
             byteBuf.writeInt(pro.getOperation());
-            byteBuf.writeInt(pro.getSeqId());
+            byteBuf.writeLong(pro.getSequence());
             byteBuf.writeBytes(pro.getBody());
         } else {
             byteBuf.writeInt(Protocol.HEADER_LENGTH);
             byteBuf.writeShort(Protocol.HEADER_LENGTH);
             byteBuf.writeShort(Protocol.VERSION);
             byteBuf.writeInt(pro.getOperation());
-            byteBuf.writeInt(pro.getSeqId());
+            byteBuf.writeLong(pro.getSequence());
         }
 
         list.add(byteBuf);
@@ -52,7 +52,7 @@ public class TcpProtocolCodec extends MessageToMessageCodec<ByteBuf, Protocol> {
         pro.setHeaderLen(byteBuf.readShort());
         pro.setVersion(byteBuf.readShort());
         pro.setOperation(byteBuf.readInt());
-        pro.setSeqId(byteBuf.readInt());
+        pro.setSequence(byteBuf.readLong());
         if (pro.getPacketLen() > pro.getHeaderLen()) {
             byte[] bytes = new byte[pro.getPacketLen() - pro.getHeaderLen()];
             byteBuf.readBytes(bytes);

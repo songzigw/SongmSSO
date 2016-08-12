@@ -29,7 +29,7 @@ public class WebSocketProtocolCodec extends
         JsonNode body = jsonMapper.readTree(pro.getBody());
         root.put("ver", pro.getVersion());
         root.put("op", pro.getOperation());
-        root.put("seq", pro.getSeqId());
+        root.put("seq", pro.getSequence());
         root.set("body", body);
 
         list.add(new TextWebSocketFrame(root.toString()));
@@ -49,7 +49,7 @@ public class WebSocketProtocolCodec extends
             pro.setOperation(root.get("op").asInt());
         }
         if (root.has("seq")) {
-            pro.setSeqId(root.get("seq").asInt());
+            pro.setSequence(root.get("seq").asLong());
         }
         if (root.has("body")) {
             pro.setBody(root.get("body").toString().getBytes());

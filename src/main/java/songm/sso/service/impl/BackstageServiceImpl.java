@@ -8,48 +8,48 @@ import org.springframework.stereotype.Component;
 
 import songm.sso.CodeUtils;
 import songm.sso.Config;
-import songm.sso.entity.Account;
-import songm.sso.service.AccountService;
+import songm.sso.entity.Backstage;
+import songm.sso.service.BackstageService;
 import songm.sso.service.CachingConfig;
 
 @Component
-public class AccountServiceImpl implements AccountService {
+public class BackstageServiceImpl implements BackstageService {
 
-    private Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(BackstageServiceImpl.class);
     private long MISTIMING = 3 * 1000;
 
     @Autowired
     private CacheManager cacheManager;
 
     @Override
-    public boolean auth(Account account) {
-        long curr = account.getCreated().getTime();
-        long mis = curr - account.getTimestamp();
+    public boolean auth(Backstage back) {
+        long curr = back.getCreated().getTime();
+        long mis = curr - back.getTimestamp();
         if (mis > MISTIMING || mis < -MISTIMING) {
             return false;
         }
 
         String key = Config.getInstance().getServerKey();
         String secret = Config.getInstance().getServerSecret();
-        if (!key.equals(account.getServerKey())) {
+        if (!key.equals(back.getServerKey())) {
             return false;
         }
 
-        StringBuilder toSign = new StringBuilder(secret).append(
-                account.getNonce()).append(account.getTimestamp());
+        StringBuilder toSign = new StringBuilder(secret)
+                .append(back.getNonce()).append(back.getTimestamp());
         String sign = CodeUtils.hexSHA1(toSign.toString());
-        if (!sign.equals(account.getSignature())) {
+        if (!sign.equals(back.getSignature())) {
             return false;
         }
 
-        cacheManager.getCache(CachingConfig.AUTH_CLIENT).put(
-                account.getClientId(), account);
-        logger.debug("Auth success, clientId={}", account.getClientId());
+        cacheManager.getCache(CachingConfig.BACKSTAGE_ITEMS).put(
+                back.getBackId(), back);
+        logger.debug("Auth success to Backstage={}", back.getBackId());
         return true;
     }
 
     @Override
-    public boolean quit(Account account) {
+    public boolean quit(Backstage back) {
         return true;
     }
 }

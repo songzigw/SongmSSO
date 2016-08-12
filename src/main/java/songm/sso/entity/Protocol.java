@@ -8,7 +8,7 @@ public class Protocol {
     private short headerLen;
     private short version;
     private int operation;
-    private int seqId;
+    private long sequence;
     private byte[] body;
 
     public int getPacketLen() {
@@ -43,12 +43,12 @@ public class Protocol {
         this.operation = operation;
     }
 
-    public int getSeqId() {
-        return seqId;
+    public long getSequence() {
+        return sequence;
     }
 
-    public void setSeqId(int seqId) {
-        this.seqId = seqId;
+    public void setSequence(long sequence) {
+        this.sequence = sequence;
     }
 
     public byte[] getBody() {
@@ -69,6 +69,6 @@ public class Protocol {
         }
         return "Proto{" + "packetLen=" + packetLen + ", headerLen=" + headerLen
                 + ", version=" + version + ", operation=" + operation
-                + ", seqId=" + seqId + ", body=" + text + '}';
+                + ", sequence=" + sequence + ", body=" + text + '}';
     }
 }

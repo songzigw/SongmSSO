@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.JsonUtils;
-import songm.sso.entity.Account;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
-import songm.sso.service.AccountService;
+import songm.sso.entity.Session;
+import songm.sso.service.BackstageService;
+import songm.sso.service.SessionService;
 
 @Component
 public class AuthOperation extends AbstractOperation {
@@ -21,28 +23,31 @@ public class AuthOperation extends AbstractOperation {
     public static final int OP_REPLY = 1;
 
     @Autowired
-    private AccountService accountService;
+    private BackstageService backstageService;
+    @Autowired
+    private SessionService sessionService;
 
     @Override
-    public Integer op() {
+    public int operation() {
         return OP;
     }
 
     @Override
     public void action(Channel ch, Protocol pro) throws Exception {
-        Account acc = JsonUtils.fromJson(pro.getBody(), Account.class);
+        Backstage back = JsonUtils.fromJson(pro.getBody(), Backstage.class);
 
-        // check token
-        if (accountService.auth(acc)) {
-            // put auth token
-            setAccount(ch, acc);
+        if (backstageService.auth(back)) {
+            setBackstage(ch, back);
             logger.debug("auth ok");
+
+            // 创建session
+            Session s = sessionService.create(back);
+            pro.setOperation(OP_REPLY);
+            pro.setBody(JsonUtils.toJson(s).getBytes());
+            ch.writeAndFlush(pro);
         } else {
             logger.debug("auth fail");
         }
-
-        pro.setOperation(OP_REPLY);
-        ch.writeAndFlush(pro);
     }
 
 }

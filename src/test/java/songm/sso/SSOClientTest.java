@@ -7,7 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import songm.sso.entity.Account;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
 import songm.sso.server.TcpProtocolCodec;
 
@@ -38,7 +38,7 @@ public class SSOClientTest {
 
             ChannelFuture f = b.connect().sync();
 
-            Account acc = new Account();
+            Backstage acc = new Backstage();
             acc.setServerKey("admin");
             Protocol proto = new Protocol();
             proto.setVersion((short) 1);

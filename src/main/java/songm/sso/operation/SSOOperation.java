@@ -16,14 +16,13 @@ public class SSOOperation {
     @Autowired
     private ApplicationContext context;
 
-    private Map<Integer, Operation> ops = new HashMap<>();
+    private Map<Integer, Operation> ops = new HashMap<Integer, Operation>();
 
     @Bean(name = "operations")
     public Map<Integer, Operation> operations() {
-        Map<String, Operation> beans = context
-                .getBeansOfType(Operation.class);
+        Map<String, Operation> beans = context.getBeansOfType(Operation.class);
         for (Operation op : beans.values()) {
-            ops.put(op.op(), op);
+            ops.put(op.operation(), op);
         }
         return ops;
     }

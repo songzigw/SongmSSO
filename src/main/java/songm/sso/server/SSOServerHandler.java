@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.Constants;
-import songm.sso.entity.Account;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
 import songm.sso.operation.Operation;
 import songm.sso.operation.SSOOperation;
-import songm.sso.service.AccountService;
+import songm.sso.service.BackstageService;
 
 @Component
 @ChannelHandler.Sharable
@@ -26,13 +26,12 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
     @Autowired
     private SSOOperation ssoOperation;
     @Autowired
-    private AccountService authService;
+    private BackstageService authService;
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Protocol pro)
             throws Exception {
         Operation op = ssoOperation.find(pro.getOperation());
-        // execute operation
         if (op != null) {
             LOG.debug(pro.toString());
             op.action(ctx.channel(), pro);
@@ -43,7 +42,7 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Account acc = ctx.attr(Constants.KEY_ACCOUNT).get();
+        Backstage acc = ctx.attr(Constants.KEY_ACCOUNT).get();
         if (acc != null) {
             authService.quit(acc);
         }
