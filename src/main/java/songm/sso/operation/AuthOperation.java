@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import songm.sso.JsonUtils;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
-import songm.sso.entity.Session;
 import songm.sso.service.BackstageService;
 import songm.sso.service.SessionService;
 
@@ -40,10 +39,6 @@ public class AuthOperation extends AbstractOperation {
             setBackstage(ch, back);
             logger.debug("auth ok");
 
-            // 创建session
-            Session s = sessionService.create(back);
-            pro.setOperation(OP_REPLY);
-            pro.setBody(JsonUtils.toJson(s).getBytes());
             ch.writeAndFlush(pro);
         } else {
             logger.debug("auth fail");
