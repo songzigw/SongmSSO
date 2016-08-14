@@ -6,14 +6,14 @@ import songm.sso.Sequence;
 
 public class Backstage {
 
+    /** 后台唯一标识 */
+    private String backId;
+    private Date created;
+
     private String serverKey;
     private String nonce;
     private long timestamp;
     private String signature;
-    private Date created;
-
-    /** 后台唯一标识 */
-    private String backId;
 
     public Backstage() {
         this.created = new Date();

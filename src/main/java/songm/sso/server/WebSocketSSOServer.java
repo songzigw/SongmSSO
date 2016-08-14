@@ -50,7 +50,7 @@ public class WebSocketSSOServer implements SSOServer {
 
     @Override
     public void start() throws SSOException {
-        LOG.info("Starting WebSocketSSOServer... Port: " + port);
+        LOG.info("Starting WebSocketSSOServer... Port:{}", port);
 
         try {
             ServerBootstrap b = new ServerBootstrap()

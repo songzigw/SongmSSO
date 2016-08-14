@@ -49,7 +49,7 @@ public class TcpSSOServer implements SSOServer {
 
     @Override
     public void start() throws SSOException {
-        LOG.info("Starting TcpSSOServer... Port: " + port);
+        LOG.info("Starting TcpSSOServer... Port:{}", port);
 
         try {
             ServerBootstrap b = new ServerBootstrap()

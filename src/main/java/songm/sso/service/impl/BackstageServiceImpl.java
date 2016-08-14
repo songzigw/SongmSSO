@@ -1,7 +1,5 @@
 package songm.sso.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
@@ -15,7 +13,6 @@ import songm.sso.service.CachingConfig;
 @Component
 public class BackstageServiceImpl implements BackstageService {
 
-    private Logger logger = LoggerFactory.getLogger(BackstageServiceImpl.class);
     private long MISTIMING = 3 * 1000;
 
     @Autowired
@@ -44,7 +41,6 @@ public class BackstageServiceImpl implements BackstageService {
 
         cacheManager.getCache(CachingConfig.BACKSTAGE_ITEMS).put(
                 back.getBackId(), back);
-        logger.debug("Auth success to Backstage={}", back.getBackId());
         return true;
     }
 

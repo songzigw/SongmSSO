@@ -31,12 +31,12 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Protocol pro)
             throws Exception {
+        LOG.debug(pro.toString());
         Operation op = ssoOperation.find(pro.getOperation());
         if (op != null) {
-            LOG.debug(pro.toString());
             op.action(ctx.channel(), pro);
         } else {
-            LOG.warn("Not found operationId: " + pro.getOperation());
+            LOG.warn("Not found operation: " + pro.getOperation());
         }
     }
 

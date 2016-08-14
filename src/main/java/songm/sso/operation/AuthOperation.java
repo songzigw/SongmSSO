@@ -37,11 +37,14 @@ public class AuthOperation extends AbstractOperation {
 
         if (backstageService.auth(back)) {
             setBackstage(ch, back);
-            logger.debug("auth ok");
+            logger.debug("Auth success to Backstage: {}", back.getBackId());
 
+            pro.setBody(JsonUtils.toJson(back).getBytes());
+            pro.setOperation(OP_REPLY);
             ch.writeAndFlush(pro);
         } else {
-            logger.debug("auth fail");
+            ch.close().syncUninterruptibly();
+            logger.debug("Auth fail to Backstage: {}", back.getBackId());
         }
     }
 
