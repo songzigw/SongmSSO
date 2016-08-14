@@ -1,23 +1,34 @@
 package songm.sso;
 
 import java.security.MessageDigest;
-
-import org.apache.commons.codec.binary.Hex;
+import java.security.NoSuchAlgorithmException;
 
 public class CodeUtils {
-    
-    public static String hexSHA1(String value) {
+
+    public static String sha1(String text) {
+        MessageDigest md = null;
+        String outStr = null;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(value.getBytes("utf-8"));
-            byte[] digest = md.digest();
-            return byteToHexString(digest);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(text.getBytes());
+            outStr = byteToString(digest);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
+        return outStr;
     }
-    
-    public static String byteToHexString(byte[] bytes) {
-        return String.valueOf(Hex.encodeHex(bytes));
+
+    private static String byteToString(byte[] digest) {
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < digest.length; i++) {
+            String tempStr = Integer.toHexString(digest[i] & 0xff);
+            if (tempStr.length() == 1) {
+                buf.append("0").append(tempStr);
+            } else {
+                buf.append(tempStr);
+            }
+        }
+        return buf.toString().toLowerCase();
     }
+
 }

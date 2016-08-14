@@ -37,7 +37,7 @@ public class BackstageServiceImpl implements BackstageService {
 
         StringBuilder toSign = new StringBuilder(secret)
                 .append(back.getNonce()).append(back.getTimestamp());
-        String sign = CodeUtils.hexSHA1(toSign.toString());
+        String sign = CodeUtils.sha1(toSign.toString());
         if (!sign.equals(back.getSignature())) {
             return false;
         }
