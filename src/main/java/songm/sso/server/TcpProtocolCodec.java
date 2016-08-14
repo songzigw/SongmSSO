@@ -21,7 +21,7 @@ public class TcpProtocolCodec extends MessageToMessageCodec<ByteBuf, Protocol> {
     private static final Logger LOG = LoggerFactory.getLogger(TcpProtocolCodec.class);
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext,
+    protected void encode(ChannelHandlerContext ctx,
             Protocol pro, List<Object> list) throws Exception {
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
         if (pro.getBody() != null) {
@@ -45,7 +45,7 @@ public class TcpProtocolCodec extends MessageToMessageCodec<ByteBuf, Protocol> {
     }
 
     @Override
-    protected void decode(ChannelHandlerContext channelHandlerContext,
+    protected void decode(ChannelHandlerContext ctx,
             ByteBuf byteBuf, List<Object> list) throws Exception {
         Protocol pro = new Protocol();
         pro.setPacketLen(byteBuf.readInt());

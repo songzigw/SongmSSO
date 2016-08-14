@@ -14,8 +14,6 @@ public class Backstage {
 
     /** 后台唯一标识 */
     private String backId;
-    /** 客户会话信息 */
-    private String sessionId;
 
     public Backstage() {
         this.created = new Date();
@@ -60,14 +58,6 @@ public class Backstage {
 
     public String getBackId() {
         return backId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
 }

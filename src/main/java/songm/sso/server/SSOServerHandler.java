@@ -42,7 +42,7 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Backstage acc = ctx.attr(Constants.KEY_ACCOUNT).get();
+        Backstage acc = ctx.attr(Constants.KEY_BACKSTAGE).get();
         if (acc != null) {
             authService.quit(acc);
         }

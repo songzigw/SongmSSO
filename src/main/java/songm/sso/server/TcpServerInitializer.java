@@ -5,8 +5,8 @@
 
 package songm.sso.server;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
-public class TcpServerInitializer extends ChannelInitializer<Channel> {
+public class TcpServerInitializer extends ChannelInitializer<SocketChannel> {
 
     @Autowired
     private TcpProtocolCodec protocolCodec;
@@ -28,7 +28,7 @@ public class TcpServerInitializer extends ChannelInitializer<Channel> {
     private SSOServerHandler serverHandler;
 
     @Override
-    protected void initChannel(Channel ch) throws Exception {
+    protected void initChannel(SocketChannel ch) throws Exception {
         ch.pipeline().addLast(protocolCodec);
         ch.pipeline().addLast(serverHandler);
     }

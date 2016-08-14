@@ -23,7 +23,7 @@ public class WebSocketProtocolCodec extends
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext,
+    protected void encode(ChannelHandlerContext ctx,
             Protocol pro, List<Object> list) throws Exception {
         ObjectNode root = jsonMapper.createObjectNode();
         JsonNode body = jsonMapper.readTree(pro.getBody());
@@ -36,7 +36,7 @@ public class WebSocketProtocolCodec extends
     }
 
     @Override
-    protected void decode(ChannelHandlerContext channelHandlerContext,
+    protected void decode(ChannelHandlerContext ctx,
             TextWebSocketFrame textWebSocketFrame, List<Object> list)
             throws Exception {
         String text = textWebSocketFrame.text();
