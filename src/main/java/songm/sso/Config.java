@@ -11,25 +11,26 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
  * 属性管理器
  * 
- * @author  zhangsong
- * @since   0.1, 2016-8-2
+ * @author zhangsong
+ * @since 0.1, 2016-8-2
  * @version 0.1
  * 
  */
 public class Config {
 
-    private static Logger logger = Logger.getLogger(Config.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 
     public static final String VERSION = "0.1";
 
     /** 属性文件全名 */
-    private static final String PFILE = "config-songmsso.properties";
+    private static final String PFILE = "config.properties";
 
     /** 属性文件的文件对象 */
     private File file;
@@ -49,8 +50,7 @@ public class Config {
 
     private void loadFile() {
         if (file == null) {
-            file = new File(Thread.currentThread()
-                    .getContextClassLoader()
+            file = new File(Thread.currentThread().getContextClassLoader()
                     .getResource(PFILE).getFile());
         }
         // 检查属性文件被修改，重新读取此文件
@@ -65,9 +65,9 @@ public class Config {
             try {
                 props.load(new FileInputStream(file));
             } catch (FileNotFoundException e) {
-                logger.error("File not found", e);
+                LOG.error("File not found", e);
             } catch (IOException e) {
-                logger.error("IO error", e);
+                LOG.error("IO exception", e);
             }
         }
     }
