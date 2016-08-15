@@ -22,9 +22,6 @@ public class Session {
 	/** 默认超时间 */
 	public static final long TIME_OUT = 1000 * 24 * 60 * 60;
 
-	/** 客户端与服务端会话唯一标示符 */
-	public static final String CLIENT_KEY = "songm_sso_key";
-
 	/** 会话唯一标示 */
 	private String id;
 
