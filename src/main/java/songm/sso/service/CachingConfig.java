@@ -22,7 +22,6 @@ import java.util.List;
 public class CachingConfig extends CachingConfigurerSupport {
 
     public static final String BACKSTAGE_ITEMS = "backstage_items";
-    public static final String SESSION_ITEMS = "session_items";
 
     @Bean
     @Override

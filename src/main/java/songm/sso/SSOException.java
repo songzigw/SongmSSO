@@ -1,4 +1,4 @@
-package songm.sso.exception;
+package songm.sso;
 
 public class SSOException extends Exception {
 

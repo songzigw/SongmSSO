@@ -8,15 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.JsonUtils;
+import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Session;
+import songm.sso.event.SessionEvent;
+import songm.sso.event.SessionListener;
+import songm.sso.event.SessionListenerManager;
 import songm.sso.service.BackstageService;
-import songm.sso.service.SessionService;
 
 @Component
 public class AuthOperation extends AbstractOperation {
 
-    private final Logger logger = LoggerFactory.getLogger(AuthOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(AuthOperation.class);
 
     public static final int OP = 0;
     public static final int OP_REPLY = 1;
@@ -24,7 +28,7 @@ public class AuthOperation extends AbstractOperation {
     @Autowired
     private BackstageService backstageService;
     @Autowired
-    private SessionService sessionService;
+    private SessionListenerManager sessionListenerManager;
 
     @Override
     public int operation() {
@@ -32,20 +36,64 @@ public class AuthOperation extends AbstractOperation {
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) throws Exception {
+    public void action(Channel ch, Protocol pro) throws SSOException {
         Backstage back = JsonUtils.fromJson(pro.getBody(), Backstage.class);
 
         if (backstageService.auth(back)) {
             setBackstage(ch, back);
-            logger.debug("Auth success to Backstage: {}", back.getBackId());
+            addListener(ch);
+            LOG.debug("Auth success to Backstage: {}", back.getBackId());
 
             pro.setBody(JsonUtils.toJson(back).getBytes());
             pro.setOperation(OP_REPLY);
             ch.writeAndFlush(pro);
         } else {
             ch.close().syncUninterruptibly();
-            logger.debug("Auth fail to Backstage: {}", back.getBackId());
+            LOG.debug("Auth fail to Backstage: {}", back.getBackId());
         }
+    }
+
+    private void addListener(final Channel ch) {
+        sessionListenerManager.addListener(new SessionListener() {
+            @Override
+            public void onCreate(SessionEvent event) {
+                Session s = (Session) event.getSource();
+
+                Protocol pro = new Protocol();
+                pro.setOperation(OP);
+                pro.setBody(JsonUtils.toJson(s).getBytes());
+
+                ch.writeAndFlush(pro);
+
+                LOG.debug("On session create... {}", pro);
+            }
+
+            @Override
+            public void onUpdate(SessionEvent event) {
+                Session s = (Session) event.getSource();
+
+                Protocol pro = new Protocol();
+                pro.setOperation(OP);
+                pro.setBody(JsonUtils.toJson(s).getBytes());
+
+                ch.writeAndFlush(pro);
+
+                LOG.debug("On session update... {}", pro);
+            }
+
+            @Override
+            public void onRemove(SessionEvent event) {
+                Session s = (Session) event.getSource();
+
+                Protocol pro = new Protocol();
+                pro.setOperation(OP);
+                pro.setBody(JsonUtils.toJson(s).getBytes());
+
+                ch.writeAndFlush(pro);
+
+                LOG.debug("On session remove... {}", pro);
+            }
+        });
     }
 
 }

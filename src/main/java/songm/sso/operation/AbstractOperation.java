@@ -2,8 +2,8 @@ package songm.sso.operation;
 
 import io.netty.channel.Channel;
 import songm.sso.Constants;
+import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
-import songm.sso.exception.UnauthorizedException;
 
 public abstract class AbstractOperation implements Operation {
 
@@ -15,9 +15,9 @@ public abstract class AbstractOperation implements Operation {
         ch.attr(Constants.KEY_BACKSTAGE).set(back);
     }
 
-    protected void checkAuth(Channel ch) throws UnauthorizedException {
+    protected void checkAuth(Channel ch) throws SSOException {
         if(getBackstage(ch) == null) {
-            throw new UnauthorizedException("Auth failure");
+            throw new SSOException("Auth failure");
         }
     }
 

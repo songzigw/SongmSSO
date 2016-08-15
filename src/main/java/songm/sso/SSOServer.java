@@ -19,7 +19,6 @@
 
 package songm.sso;
 
-import songm.sso.exception.SSOException;
 
 
 /**

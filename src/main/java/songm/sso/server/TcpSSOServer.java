@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import songm.sso.SSOException;
 import songm.sso.SSOServer;
-import songm.sso.exception.SSOException;
 
 /**
  * Tcp连接服务，实现单点登入
