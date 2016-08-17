@@ -58,7 +58,7 @@ public class AuthOperation extends AbstractOperation {
         sessionListenerManager.addListener(new SessionListener() {
             @Override
             public void onCreate(SessionEvent event) {
-                Session s = (Session) event.getSource();
+                Session s = event.getSession();
 
                 Protocol pro = new Protocol();
                 pro.setOperation(OP);
@@ -71,7 +71,7 @@ public class AuthOperation extends AbstractOperation {
 
             @Override
             public void onUpdate(SessionEvent event) {
-                Session s = (Session) event.getSource();
+                Session s = event.getSession();
 
                 Protocol pro = new Protocol();
                 pro.setOperation(OP);
@@ -84,7 +84,7 @@ public class AuthOperation extends AbstractOperation {
 
             @Override
             public void onRemove(SessionEvent event) {
-                Session s = (Session) event.getSource();
+                Session s = event.getSession();
 
                 Protocol pro = new Protocol();
                 pro.setOperation(OP);

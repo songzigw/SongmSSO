@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.springframework.stereotype.Component;
 
 import songm.sso.entity.Session;
+import songm.sso.event.SessionEvent.EventType;
 
 @Component
 public class SessionListenerManager {
@@ -42,24 +43,37 @@ public class SessionListenerManager {
 
     private void notifyListeners(SessionEvent event) {
         Iterator<SessionListener> iter = listeners.iterator();
+        EventType type = event.getSource();
         while (iter.hasNext()) {
             SessionListener listener = (SessionListener) iter.next();
-            listener.onCreate(event);
+            if (EventType.CREATE.equals(type)) {
+                listener.onCreate(event);
+            } else if (EventType.UPDATE.equals(type)) {
+                listener.onUpdate(event);
+            } else if (EventType.UPDATE.equals(type)) {
+                listener.onRemove(event);
+            }
         }
     }
-    
+
     public void triggerCreate(Session session) {
         if (listeners == null)
             return;
+        SessionEvent event = new SessionEvent(EventType.CREATE, session);
+        this.notifyListeners(event);
     }
-    
+
     public void triggerUpdate(Session session) {
         if (listeners == null)
             return;
+        SessionEvent event = new SessionEvent(EventType.UPDATE, session);
+        this.notifyListeners(event);
     }
-    
+
     public void triggerRemove(Session session) {
         if (listeners == null)
             return;
+        SessionEvent event = new SessionEvent(EventType.REMOVE, session);
+        this.notifyListeners(event);
     }
 }

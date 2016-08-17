@@ -8,18 +8,23 @@ public class SessionEvent extends EventObject {
 
     private static final long serialVersionUID = 1653489079814920063L;
 
-    public static final int CREATE = 1;
-    public static final int UPDATE = 2;
-    public static final int REMOVE = 3;
+    private Session session;
 
-    private int type;
-
-    public SessionEvent(Session source, int eventType) {
+    public SessionEvent(EventType source, Session session) {
         super(source);
-        this.type = eventType;
+        this.session = session;
     }
 
-    public int getType() {
-        return type;
+    @Override
+    public EventType getSource() {
+        return (EventType) super.getSource();
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public static enum EventType {
+        CREATE, UPDATE, REMOVE
     }
 }
