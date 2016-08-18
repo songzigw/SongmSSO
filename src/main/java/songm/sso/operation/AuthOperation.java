@@ -1,3 +1,20 @@
+/*
+ * Copyright [2016] [zhangsong <songm.cn>].
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ */
+
 package songm.sso.operation;
 
 import io.netty.channel.Channel;
@@ -22,9 +39,6 @@ public class AuthOperation extends AbstractOperation {
 
     private final Logger LOG = LoggerFactory.getLogger(AuthOperation.class);
 
-    public static final int OP = 0;
-    public static final int OP_REPLY = 1;
-
     @Autowired
     private BackstageService backstageService;
     @Autowired
@@ -32,7 +46,7 @@ public class AuthOperation extends AbstractOperation {
 
     @Override
     public int operation() {
-        return OP;
+        return Type.AUTH_REQUEST.getValue();
     }
 
     @Override
@@ -40,17 +54,25 @@ public class AuthOperation extends AbstractOperation {
         Backstage back = JsonUtils.fromJson(pro.getBody(), Backstage.class);
 
         if (backstageService.auth(back)) {
-            setBackstage(ch, back);
+            // 授权成功
             LOG.debug("Auth success to Backstage: {}", back.getBackId());
+            setBackstage(ch, back);
 
+            pro.setOperation(Type.AUTH_SUCCEED.getValue());
             pro.setBody(JsonUtils.toJson(back).getBytes());
-            pro.setOperation(OP_REPLY);
             ch.writeAndFlush(pro);
 
             addListener(ch);
         } else {
-            ch.close().syncUninterruptibly();
+            // 授权失败
             LOG.debug("Auth fail to Backstage: {}", back.getBackId());
+
+            pro.setOperation(Type.AUTH_FAIL.getValue());
+            pro.setBody(JsonUtils.toJson(back).getBytes());
+            ch.writeAndFlush(pro);
+
+            // 关闭连接
+            ch.close().syncUninterruptibly();
         }
     }
 
@@ -61,7 +83,7 @@ public class AuthOperation extends AbstractOperation {
                 Session s = event.getSession();
 
                 Protocol pro = new Protocol();
-                pro.setOperation(OP);
+                pro.setOperation(Type.SESSION_CREATE.getValue());
                 pro.setBody(JsonUtils.toJson(s).getBytes());
 
                 ch.writeAndFlush(pro);
@@ -74,7 +96,7 @@ public class AuthOperation extends AbstractOperation {
                 Session s = event.getSession();
 
                 Protocol pro = new Protocol();
-                pro.setOperation(OP);
+                pro.setOperation(Type.SESSION_UPDATE.getValue());
                 pro.setBody(JsonUtils.toJson(s).getBytes());
 
                 ch.writeAndFlush(pro);
@@ -87,7 +109,7 @@ public class AuthOperation extends AbstractOperation {
                 Session s = event.getSession();
 
                 Protocol pro = new Protocol();
-                pro.setOperation(OP);
+                pro.setOperation(Type.SESSION_REMOVE.getValue());
                 pro.setBody(JsonUtils.toJson(s).getBytes());
 
                 ch.writeAndFlush(pro);
