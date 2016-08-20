@@ -17,8 +17,6 @@
 
 package songm.sso;
 
-
-
 /**
  * 单点登入服务接口
  *

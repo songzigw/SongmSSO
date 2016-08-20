@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import songm.sso.SSOException;
 import songm.sso.SSOServer;
+import songm.sso.SSOException.ErrorCode;
 
 /**
  * WebSocket连接服务，实现单点登入
@@ -61,7 +62,7 @@ public class WebSocketSSOServer implements SSOServer {
         } catch (InterruptedException e) {
             String message = "Start WebSocketSSOServer failure";
             LOG.error(message, e);
-            throw new SSOException(message, e);
+            throw new SSOException(ErrorCode.START_ERR, message, e);
         } finally {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override

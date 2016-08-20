@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import songm.sso.SSOException;
+import songm.sso.SSOException.ErrorCode;
 import songm.sso.SSOServer;
 
 /**
@@ -60,7 +61,7 @@ public class TcpSSOServer implements SSOServer {
         } catch (InterruptedException e) {
             String message = "Start TcpSSOServer failure";
             LOG.error(message, e);
-            throw new SSOException(message, e);
+            throw new SSOException(ErrorCode.START_ERR , message, e);
         } finally {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
