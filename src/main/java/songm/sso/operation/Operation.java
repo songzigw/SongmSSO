@@ -28,17 +28,19 @@ public interface Operation {
     public static enum Type {
         /** 连接授权 */
         CONN_AUTH(1),
-        
+
         /** 用户报道 */
-        USER_REPORT(4),
-        
-        /** Session */
-        SESSION_CREATE(5),
-        SESSION_UPDATE(6),
-        SESSION_REMOVE(7);
-        
+        USER_REPORT(2),
+
+        /** Session Create */
+        SESSION_CREATE(3),
+        /** Session Update */
+        SESSION_UPDATE(4),
+        /** Session Revove */
+        SESSION_REMOVE(5);
+
         private final int value;
-        
+
         private Type(int value) {
             this.value = value;
         }
@@ -46,7 +48,7 @@ public interface Operation {
         public int getValue() {
             return value;
         }
-        
+
         public static Type getInstance(int v) {
             for (Type type : Type.values()) {
                 if (type.getValue() == v) {

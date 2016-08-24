@@ -54,7 +54,6 @@ public class SSOException extends Exception {
 
     public static enum ErrorCode {
         // 授权异常
-
         /** 授权失败 */
         AUTH_FAILURE,
         /** 授权失效 */
