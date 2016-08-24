@@ -1,4 +1,4 @@
-package songm.sso;
+package songm.sso.utils;
 
 /**
  * 随机序列处理

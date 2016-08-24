@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
-import songm.sso.CodeUtils;
 import songm.sso.Config;
 import songm.sso.entity.Backstage;
 import songm.sso.service.BackstageService;
 import songm.sso.service.CachingConfig;
+import songm.sso.utils.CodeUtils;
 
 @Component
 public class BackstageServiceImpl implements BackstageService {

@@ -1,4 +1,4 @@
-package songm.sso;
+package songm.sso.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

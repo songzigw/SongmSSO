@@ -24,11 +24,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.JsonUtils;
 import songm.sso.SSOException;
 import songm.sso.entity.Protocol;
 import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
+import songm.sso.utils.JsonUtils;
 
 @Component
 public class ReportOperation extends AbstractOperation {

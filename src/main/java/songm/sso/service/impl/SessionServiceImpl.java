@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.Sequence;
 import songm.sso.entity.Session;
 import songm.sso.event.SessionListenerManager;
 import songm.sso.service.SessionService;
+import songm.sso.utils.Sequence;
 
 @Component
 public class SessionServiceImpl implements SessionService {
