@@ -20,7 +20,7 @@ package songm.sso.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import songm.sso.Sequence;
+import songm.sso.utils.Sequence;
 
 /**
  * 应用程序后台信息
