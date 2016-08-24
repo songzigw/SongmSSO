@@ -17,16 +17,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 @ChannelHandler.Sharable
-public class WebSocketProtocolCodec extends
+public class WsocketProtocolCodec extends
         MessageToMessageCodec<TextWebSocketFrame, Protocol> {
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
 
     @Override
-    protected void encode(ChannelHandlerContext ctx,
-            Protocol pro, List<Object> list) throws Exception {
+    protected void encode(ChannelHandlerContext ctx, Protocol pro,
+            List<Object> list) throws Exception {
         ObjectNode root = jsonMapper.createObjectNode();
         JsonNode body = jsonMapper.readTree(pro.getBody());
+
         root.put("ver", pro.getVersion());
         root.put("op", pro.getOperation());
         root.put("seq", pro.getSequence());
@@ -41,6 +42,7 @@ public class WebSocketProtocolCodec extends
             throws Exception {
         String text = textWebSocketFrame.text();
         JsonNode root = jsonMapper.readTree(text);
+
         Protocol pro = new Protocol();
         if (root.has("ver")) {
             pro.setVersion(root.get("ver").shortValue());

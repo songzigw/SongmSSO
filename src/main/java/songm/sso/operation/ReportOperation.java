@@ -44,8 +44,13 @@ public class ReportOperation extends AbstractOperation {
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) throws SSOException {
-        this.checkAuth(ch);
+    public void action(Channel ch, Protocol pro) {
+        try {
+            this.checkAuth(ch);
+        } catch (SSOException e) {
+            ch.close().syncUninterruptibly();
+            return;
+        }
 
         String sessionId = new String(pro.getBody());
         Session ses = sessionService.create(sessionId);

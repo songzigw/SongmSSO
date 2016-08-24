@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.operation;
 
 import io.netty.channel.Channel;
@@ -25,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.JsonUtils;
-import songm.sso.SSOException;
+import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
 import songm.sso.entity.Session;
@@ -46,11 +45,11 @@ public class AuthOperation extends AbstractOperation {
 
     @Override
     public int operation() {
-        return Type.AUTH_REQUEST.getValue();
+        return Type.CONN_AUTH.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) throws SSOException {
+    public void action(Channel ch, Protocol pro) {
         Backstage back = JsonUtils.fromJson(pro.getBody(), Backstage.class);
 
         if (backstageService.auth(back)) {
@@ -58,7 +57,6 @@ public class AuthOperation extends AbstractOperation {
             LOG.debug("Auth success to Backstage: {}", back.getBackId());
             setBackstage(ch, back);
 
-            pro.setOperation(Type.AUTH_SUCCEED.getValue());
             pro.setBody(JsonUtils.toJson(back).getBytes());
             ch.writeAndFlush(pro);
 
@@ -67,7 +65,7 @@ public class AuthOperation extends AbstractOperation {
             // 授权失败
             LOG.debug("Auth fail to Backstage: {}", back.getBackId());
 
-            pro.setOperation(Type.AUTH_FAIL.getValue());
+            back.setErrorCode(ErrorCode.AUTH_FAILURE.name());
             pro.setBody(JsonUtils.toJson(back).getBytes());
             ch.writeAndFlush(pro);
 

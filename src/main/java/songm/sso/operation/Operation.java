@@ -14,24 +14,20 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.operation;
 
 import io.netty.channel.Channel;
-import songm.sso.SSOException;
 import songm.sso.entity.Protocol;
 
 public interface Operation {
 
     public int operation();
 
-    void action(Channel ch, Protocol pro) throws SSOException;
+    void action(Channel ch, Protocol pro);
 
     public static enum Type {
-        /** 授权 */
-        AUTH_REQUEST(1),
-        AUTH_SUCCEED(2),
-        AUTH_FAIL(3),
+        /** 连接授权 */
+        CONN_AUTH(1),
         
         /** 用户报道 */
         USER_REPORT(4),

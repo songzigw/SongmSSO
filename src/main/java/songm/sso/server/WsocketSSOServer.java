@@ -30,21 +30,21 @@ import songm.sso.SSOException.ErrorCode;
  * 
  */
 @Component("webSocketSSOServer")
-public class WebSocketSSOServer implements SSOServer {
+public class WsocketSSOServer implements SSOServer {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(WebSocketSSOServer.class);
+            .getLogger(WsocketSSOServer.class);
 
     @Value("${server.websocket.port}")
     private int port;
     @Autowired
-    private WebSocketServerInitializer serverInitializer;
+    private WsocketServerInitializer serverInitializer;
 
     private final EventLoopGroup bossGroup;
     private final EventLoopGroup workGroup;
     private ChannelFuture channelFuture;
 
-    public WebSocketSSOServer() {
+    public WsocketSSOServer() {
         bossGroup = new NioEventLoopGroup();
         workGroup = new NioEventLoopGroup();
     }
@@ -62,7 +62,7 @@ public class WebSocketSSOServer implements SSOServer {
         } catch (InterruptedException e) {
             String message = "Start WebSocketSSOServer failure";
             LOG.error(message, e);
-            throw new SSOException(ErrorCode.START_ERR, message, e);
+            throw new SSOException(ErrorCode.START_ERROR, message, e);
         } finally {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override

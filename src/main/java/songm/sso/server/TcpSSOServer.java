@@ -61,7 +61,7 @@ public class TcpSSOServer implements SSOServer {
         } catch (InterruptedException e) {
             String message = "Start TcpSSOServer failure";
             LOG.error(message, e);
-            throw new SSOException(ErrorCode.START_ERR , message, e);
+            throw new SSOException(ErrorCode.START_ERROR , message, e);
         } finally {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override

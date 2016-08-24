@@ -25,10 +25,10 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
-public class WebSocketServerInitializer extends ChannelInitializer<NioSocketChannel> {
+public class WsocketServerInitializer extends ChannelInitializer<NioSocketChannel> {
 
     @Autowired
-    private WebSocketProtocolCodec protocolCodec;
+    private WsocketProtocolCodec protocolCodec;
     @Autowired
     private SSOServerHandler serverHandler;
 

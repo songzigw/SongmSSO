@@ -19,8 +19,8 @@ package songm.sso;
 /**
  * 异常类
  *
- * @author  zhangsong
- * @since   0.1, 2016-8-2
+ * @author zhangsong
+ * @since 0.1, 2016-8-2
  * @version 0.1
  * 
  */
@@ -54,12 +54,15 @@ public class SSOException extends Exception {
 
     public static enum ErrorCode {
         // 授权异常
-        AUTH_FAIL,
-        AUTH_SUCCEED,
+
+        /** 授权失败 */
+        AUTH_FAILURE,
+        /** 授权失效 */
         AUTH_DISABLED,
-        
+
         // 启动异常
-        START_ERR
+        /** 启动错误 */
+        START_ERROR
     }
 
 }
