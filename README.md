@@ -26,14 +26,9 @@ SSOApplication.main();
 
 | 包头 | 包体 |
 | --- | --- |
-| 描述数据包整体信息，占整个数据包的20个字节(Byte)
-  - Version
-  - HeaderLen
-  - Operation
-  - Sequence
-  - PacketLen | 以Json格式封装了实际数据 |
+| 描述数据包整体信息，占整个数据包的20个字节(Byte) | 以Json格式封装了实际数据 |
 
------包头-----
+----- 包头 -----
 
 - Version
 占2byte，描述协议版本号
@@ -50,7 +45,7 @@ SSOApplication.main();
 - PacketLen
 占4byte，描述整个数据包的字节大小（固定包头20byte + 包体实际字节）
 
------包体-----
+----- 包体 -----
 
 - Body
 占用字节，以实际字节长度为准，以Json格式封装了实际数据
@@ -59,23 +54,17 @@ SSOApplication.main();
 
 ----- 请求 -----
 
-包头
-
+```
 Operation = 1
-
-包体
-
 Body = {}
+```
 
------ 相应 -----
+----- 响应 -----
 
-包头
-
+```
 Operation = 1
-
-包体
-
 Body = {}
+```
 
 ## License
 
