@@ -20,7 +20,7 @@ SSOApplication.main();
 
 + [Java语言后台服务开发API](https://github.com/songzigw/songm.sso.backstage.java)
 
-**协议封装**
+### 协议封装
 
 协议分为两部分，数据包头和包体
 
@@ -28,7 +28,7 @@ SSOApplication.main();
 | --- | --- |
 | 描述数据包整体信息，占整个数据包的20个字节(Byte) | 以Json格式封装了实际数据 |
 
------ 包头 -----
+----- 包头部分 -----
 
 - Version
 占2byte，描述协议版本号
@@ -45,22 +45,22 @@ SSOApplication.main();
 - PacketLen
 占4byte，描述整个数据包的字节大小（固定包头20byte + 包体实际字节）
 
------ 包体 -----
+----- 包体部分 -----
 
 - Body
 占用字节，以实际字节长度为准，以Json格式封装了实际数据
 
-+ ***连接并授权***
+### 请求操作项
+
++ 1\连接并授权
 
 ----- 请求 -----
-
 ```
 Operation = 1
 Body = {}
 ```
 
 ----- 响应 -----
-
 ```
 Operation = 1
 Body = {}
