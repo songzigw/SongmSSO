@@ -2,16 +2,13 @@
  * Copyright (c) 2016, zhangsong <songm.cn>.
  *
  */
-
 package songm.sso;
 
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 
 /**
  * 单点登入应用
@@ -21,26 +18,43 @@ import org.springframework.context.annotation.ComponentScan;
  * @version 0.1
  * 
  */
-@SpringBootApplication
-@ComponentScan("songm.sso")
-public class SSOApplication implements CommandLineRunner {
+@Component
+public class SSOApplication implements SSOServer {
 
     private static Logger LOG = LoggerFactory.getLogger(SSOApplication.class);
 
     @Resource(name = "tcpSSOServer")
     private SSOServer tcpSSOServer;
-    @Resource(name = "webSocketSSOServer")
-    private SSOServer webSocketSSOServer;
+    @Resource(name = "wsocketSSOServer")
+    private SSOServer wsocketSSOServer;
 
     @Override
-    public void run(String... args) throws Exception {
-        try {
-            tcpSSOServer.start();
-            webSocketSSOServer.start();
+    public void start() throws SSOException {
+        LOG.info("SongSSO Server starting");
 
-            Thread.currentThread().join();
-        } catch (Exception e) {
-            LOG.error("startup error!", e);
-        }
+        tcpSSOServer.start();
+        wsocketSSOServer.start();
+
+        LOG.info("SongSSO Server start finish");
+    }
+
+    @Override
+    public void restart() throws SSOException {
+        LOG.info("SongSSO Server restart...");
+
+        tcpSSOServer.restart();
+        wsocketSSOServer.restart();
+
+        LOG.info("SongSSO Server restart finish");
+    }
+
+    @Override
+    public void shutdown() {
+        LOG.info("SongSSO Server shutdown...");
+
+        tcpSSOServer.shutdown();
+        wsocketSSOServer.shutdown();
+
+        LOG.info("SongSSO Server shutdown finish");
     }
 }

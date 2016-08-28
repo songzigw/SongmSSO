@@ -29,7 +29,7 @@ import songm.sso.SSOException.ErrorCode;
  * @version 0.1
  * 
  */
-@Component("webSocketSSOServer")
+@Component("wsocketSSOServer")
 public class WsocketSSOServer implements SSOServer {
 
     private static final Logger LOG = LoggerFactory
