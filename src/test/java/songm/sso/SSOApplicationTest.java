@@ -1,10 +1,24 @@
 package songm.sso;
 
-import org.springframework.boot.SpringApplication;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:application.xml"}) 
 public class SSOApplicationTest {
 
-    public static void main(String[] args) {
-        SpringApplication.run(SSOApplication.class, args);
+    @Autowired
+    private SSOApplication ssoApplication;
+    
+    @Test
+    public void startTest() {
+        try {
+            ssoApplication.start();
+        } catch (SSOException e) {
+            e.printStackTrace();
+        }
     }
 }
