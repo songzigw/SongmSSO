@@ -2,7 +2,6 @@
  * Copyright (c) 2016, zhangsong <songm.cn>.
  *
  */
-
 package songm.sso.server;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -50,8 +49,6 @@ public class TcpSSOServer implements SSOServer {
 
     @Override
     public void start() throws SSOException {
-        LOG.info("Starting TcpSSOServer... Port:{}", port);
-
         try {
             ServerBootstrap b = new ServerBootstrap()
                     .group(bossGroup, workGroup)
@@ -70,6 +67,7 @@ public class TcpSSOServer implements SSOServer {
                 }
             });
         }
+        LOG.info("Start TcpSSOServer Port:{}", port);
     }
 
     @Override

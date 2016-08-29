@@ -2,7 +2,6 @@
  * Copyright (c) 2016, zhangsong <songm.cn>.
  *
  */
-
 package songm.sso.server;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -51,8 +50,6 @@ public class WsocketSSOServer implements SSOServer {
 
     @Override
     public void start() throws SSOException {
-        LOG.info("Starting WebSocketSSOServer... Port:{}", port);
-
         try {
             ServerBootstrap b = new ServerBootstrap()
                     .group(bossGroup, workGroup)
@@ -71,6 +68,7 @@ public class WsocketSSOServer implements SSOServer {
                 }
             });
         }
+        LOG.info("Start WebSocketSSOServer Port:{}", port);
     }
 
     @Override
