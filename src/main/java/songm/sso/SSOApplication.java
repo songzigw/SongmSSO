@@ -4,11 +4,8 @@
  */
 package songm.sso;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 /**
  * 单点登入应用
@@ -18,16 +15,29 @@ import org.springframework.stereotype.Component;
  * @version 0.1
  * 
  */
-@Component
 public class SSOApplication implements SSOServer {
 
     private static Logger LOG = LoggerFactory.getLogger(SSOApplication.class);
 
-    @Resource(name = "tcpSSOServer")
     private SSOServer tcpSSOServer;
-    @Resource(name = "wsocketSSOServer")
     private SSOServer wsocketSSOServer;
 
+    public void setTcpSSOServer(SSOServer tcpSSOServer) {
+        this.tcpSSOServer = tcpSSOServer;
+    }
+
+    public void setWsocketSSOServer(SSOServer wsocketSSOServer) {
+        this.wsocketSSOServer = wsocketSSOServer;
+    }
+
+    public void init() {
+        try {
+            this.start();
+        } catch (SSOException e) {
+            LOG.error("SongmSSOServer start error", e);
+        }
+    }
+    
     @Override
     public void start() throws SSOException {
         LOG.info("SongSSO Server starting");
