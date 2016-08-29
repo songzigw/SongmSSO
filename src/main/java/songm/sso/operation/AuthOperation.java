@@ -57,7 +57,7 @@ public class AuthOperation extends AbstractOperation {
             LOG.debug("Auth success to Backstage: {}", back.getBackId());
             setBackstage(ch, back);
 
-            pro.setBody(JsonUtils.toJson(back).getBytes());
+            pro.setBody(JsonUtils.toJson(back, Backstage.class).getBytes());
             ch.writeAndFlush(pro);
 
             addListener(ch);
@@ -66,7 +66,7 @@ public class AuthOperation extends AbstractOperation {
             LOG.debug("Auth fail to Backstage: {}", back.getBackId());
 
             back.setErrorCode(ErrorCode.AUTH_FAILURE.name());
-            pro.setBody(JsonUtils.toJson(back).getBytes());
+            pro.setBody(JsonUtils.toJson(back, Backstage.class).getBytes());
             ch.writeAndFlush(pro);
 
             // 关闭连接
@@ -82,7 +82,7 @@ public class AuthOperation extends AbstractOperation {
 
                 Protocol pro = new Protocol();
                 pro.setOperation(Type.SESSION_CREATE.getValue());
-                pro.setBody(JsonUtils.toJson(s).getBytes());
+                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
 
                 ch.writeAndFlush(pro);
 
@@ -95,7 +95,7 @@ public class AuthOperation extends AbstractOperation {
 
                 Protocol pro = new Protocol();
                 pro.setOperation(Type.SESSION_UPDATE.getValue());
-                pro.setBody(JsonUtils.toJson(s).getBytes());
+                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
 
                 ch.writeAndFlush(pro);
 
@@ -108,7 +108,7 @@ public class AuthOperation extends AbstractOperation {
 
                 Protocol pro = new Protocol();
                 pro.setOperation(Type.SESSION_REMOVE.getValue());
-                pro.setBody(JsonUtils.toJson(s).getBytes());
+                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
 
                 ch.writeAndFlush(pro);
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.operation;
 
 import io.netty.channel.Channel;
@@ -57,7 +56,7 @@ public class ReportOperation extends AbstractOperation {
         LOG.debug("User report sessionId:{}", ses.getId());
 
         pro.setOperation(Type.SESSION_UPDATE.getValue());
-        pro.setBody(JsonUtils.toJson(ses).getBytes());
+        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);
     }
 
