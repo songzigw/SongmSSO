@@ -31,7 +31,6 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Protocol pro)
             throws Exception {
-        LOG.debug(pro.toString());
         Operation op = ssoOperation.find(pro.getOperation());
         if (op != null) {
             op.action(ctx.channel(), pro);
@@ -46,12 +45,12 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
         if (acc != null) {
             authService.quit(acc);
         }
-        LOG.debug("handlerRemoved: {}", acc);
+        LOG.debug("HandlerRemoved: {}", acc);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
-        LOG.error("exceptionCaught", cause);
+        LOG.error("ExceptionCaught", cause);
     }
 }
