@@ -21,4 +21,19 @@ public class SSOApplicationTest {
             e.printStackTrace();
         }
     }
+    
+    @Test
+    public void testRestart() {
+        try {
+            ssoApplication.restart();
+        } catch (SSOException e) {
+            e.printStackTrace();
+        }
+        ssoApplication.shutdown();
+    }
+
+    @Test
+    public void testShutdown() {
+        ssoApplication.shutdown();
+    }
 }
