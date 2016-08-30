@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.operation;
 
 import java.util.HashMap;
@@ -27,8 +26,13 @@ import org.springframework.stereotype.Component;
 
 import songm.sso.operation.Operation;
 
+/**
+ * 事件操作管理器
+ * @author zhangsong
+ *
+ */
 @Component
-public class SSOOperation {
+public class OperationManager {
 
     @Autowired
     private ApplicationContext context;
