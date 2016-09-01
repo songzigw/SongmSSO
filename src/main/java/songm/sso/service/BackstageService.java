@@ -7,6 +7,4 @@ public interface BackstageService {
 
     boolean auth(Backstage back);
 
-    boolean quit(Backstage back);
-
 }

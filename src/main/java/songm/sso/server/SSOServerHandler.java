@@ -25,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.Constants;
-import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
 import songm.sso.operation.Operation;
 import songm.sso.operation.OperationManager;
@@ -62,11 +60,7 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        Backstage acc = ctx.attr(Constants.KEY_BACKSTAGE).get();
-        if (acc != null) {
-            authService.quit(acc);
-        }
-        LOG.debug("HandlerRemoved: {}", acc);
+        LOG.debug("HandlerRemoved", ctx);
     }
 
     @Override

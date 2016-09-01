@@ -39,7 +39,7 @@ import songm.sso.event.SessionEvent.EventType;
 @Component
 public class SessionListenerManager {
 
-    private Collection<SessionListener> listeners;
+    private final Collection<SessionListener> listeners;
 
     public SessionListenerManager() {
         listeners = new HashSet<SessionListener>();
@@ -51,9 +51,6 @@ public class SessionListenerManager {
      * @param listener
      */
     public void addListener(SessionListener listener) {
-        if (listeners == null) {
-            listeners = new HashSet<SessionListener>();
-        }
         listeners.add(listener);
     }
 
@@ -63,8 +60,6 @@ public class SessionListenerManager {
      * @param listener
      */
     public void removeListener(SessionListener listener) {
-        if (listeners == null)
-            return;
         listeners.remove(listener);
     }
 

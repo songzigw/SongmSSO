@@ -1,22 +1,16 @@
 package songm.sso.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import songm.sso.Config;
 import songm.sso.entity.Backstage;
 import songm.sso.service.BackstageService;
-import songm.sso.service.CachingConfig;
 import songm.sso.utils.CodeUtils;
 
 @Component
 public class BackstageServiceImpl implements BackstageService {
 
     private long MISTIMING = 3 * 1000;
-
-    @Autowired
-    private CacheManager cacheManager;
 
     @Override
     public boolean auth(Backstage back) {
@@ -39,13 +33,7 @@ public class BackstageServiceImpl implements BackstageService {
             return false;
         }
 
-        cacheManager.getCache(CachingConfig.BACKSTAGE_ITEMS).put(
-                back.getBackId(), back);
         return true;
     }
 
-    @Override
-    public boolean quit(Backstage back) {
-        return true;
-    }
 }
