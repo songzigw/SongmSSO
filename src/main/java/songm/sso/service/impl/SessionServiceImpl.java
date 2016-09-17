@@ -54,12 +54,17 @@ public class SessionServiceImpl implements SessionService {
         if (sessionId == null) {
             return null;
         }
-        return sesItems.get(sessionId);
+        Session s = sesItems.get(sessionId);
+        if (s != null) {
+            s.updateAccessTime();
+        }
+        return s;
     }
 
     @Override
     public void removeSession(String sessionId) {
-        sesItems.remove(sessionId);
+        Session s = sesItems.remove(sessionId);
+        sessionListenerManager.triggerRemove(s);
     }
 
     @Override
@@ -69,6 +74,7 @@ public class SessionServiceImpl implements SessionService {
             return;
         }
         ses.setAttribute(name, obj);
+        sessionListenerManager.triggerUpdate(ses);
     }
 
     @Override

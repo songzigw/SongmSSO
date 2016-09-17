@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.entity;
 
 import java.util.Date;

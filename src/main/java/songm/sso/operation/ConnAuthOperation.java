@@ -70,6 +70,7 @@ public class ConnAuthOperation extends AbstractOperation {
             // 授权失败
             LOG.debug("Auth fail to Backstage: {}", back.getBackId());
 
+            back.setSucceed(false);
             back.setErrorCode(ErrorCode.AUTH_FAILURE.name());
             pro.setBody(JsonUtils.toJson(back, Backstage.class).getBytes());
             ch.writeAndFlush(pro);

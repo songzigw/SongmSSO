@@ -23,44 +23,39 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.SSOException;
+import songm.sso.entity.Attribute;
 import songm.sso.entity.Protocol;
-import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
- * 用户报道操作
+ * Session属性操作
  * @author zhangsong
  *
  */
-@Component("reportOperation")
-public class ReportOperation extends AbstractOperation {
+@Component("attrSetOperation")
+public class AttrGetOperation extends AbstractOperation {
 
-    private final Logger LOG = LoggerFactory.getLogger(ReportOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(AttrGetOperation.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
     public int handle() {
-        return Type.USER_REPORT.getValue();
+        return Type.SES_ATTR_GET.getValue();
     }
 
     @Override
     public void action(Channel ch, Protocol pro) {
-        try {
-            this.checkAuth(ch);
-        } catch (SSOException e) {
-            ch.close().syncUninterruptibly();
-            return;
-        }
+        super.action(ch, pro);
 
-        Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
-        ses = sessionService.createSession(ses.getSesId());
-        LOG.debug("User report sessionId:{}", ses.getSesId());
+        Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
+        String value = (String)sessionService.getAttribute(attr.getSesId(), attr.getKey());
+        attr.setValue(value);
+        LOG.debug("User update session:{}", attr.getSesId());
 
-        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
+        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

@@ -21,6 +21,7 @@ import songm.sso.Constants;
 import songm.sso.SSOException;
 import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
+import songm.sso.entity.Protocol;
 
 /**
  * 基础操作类
@@ -43,4 +44,13 @@ public abstract class AbstractOperation implements Operation {
         }
     }
 
+    @Override
+    public void action(Channel ch, Protocol pro) {
+        try {
+            this.checkAuth(ch);
+        } catch (SSOException e) {
+            ch.close().syncUninterruptibly();
+            return;
+        }
+    }
 }

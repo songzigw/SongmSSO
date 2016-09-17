@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.event;
 
 import java.util.EventObject;

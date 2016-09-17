@@ -42,7 +42,12 @@ public interface Operation {
         /** Session Update */
         SESSION_UPDATE(4),
         /** Session Revove */
-        SESSION_REMOVE(5);
+        SESSION_REMOVE(5),
+        
+        /** Session属性设置 */
+        SES_ATTR_SET(6),
+        /** Session属性获取 */
+        SES_ATTR_GET(7);
 
         private final int value;
 

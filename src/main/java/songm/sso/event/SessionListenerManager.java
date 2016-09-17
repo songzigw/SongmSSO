@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.event;
 
 import java.util.Collection;
@@ -36,7 +35,7 @@ import songm.sso.event.SessionEvent.EventType;
  * @version 0.1
  * 
  */
-@Component
+@Component("sessionListenerManager")
 public class SessionListenerManager {
 
     private final Collection<SessionListener> listeners;
