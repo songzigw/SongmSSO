@@ -14,7 +14,6 @@
  * limitations under the License.
  * 
  */
-
 package songm.sso.operation;
 
 import io.netty.channel.Channel;
@@ -23,6 +22,11 @@ import songm.sso.SSOException;
 import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
 
+/**
+ * 基础操作类
+ * @author zhangsong
+ *
+ */
 public abstract class AbstractOperation implements Operation {
 
     protected Backstage getBackstage(Channel ch) {

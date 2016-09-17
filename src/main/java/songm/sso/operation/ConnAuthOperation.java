@@ -33,10 +33,15 @@ import songm.sso.event.SessionListenerManager;
 import songm.sso.service.BackstageService;
 import songm.sso.utils.JsonUtils;
 
-@Component
-public class AuthOperation extends AbstractOperation {
+/**
+ * 连接授权操作
+ * @author zhangsong
+ *
+ */
+@Component("connAuthOperation")
+public class ConnAuthOperation extends AbstractOperation {
 
-    private final Logger LOG = LoggerFactory.getLogger(AuthOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(ConnAuthOperation.class);
 
     @Autowired
     private BackstageService backstageService;
@@ -44,7 +49,7 @@ public class AuthOperation extends AbstractOperation {
     private SessionListenerManager sessionListenerManager;
 
     @Override
-    public int operation() {
+    public int handle() {
         return Type.CONN_AUTH.getValue();
     }
 

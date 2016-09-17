@@ -17,7 +17,6 @@
 
 package songm.sso.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +29,7 @@ import java.util.Map;
  * @version 0.1
  * 
  */
-public class Session extends Entity implements Serializable {
+public class Session extends Entity {
 
     private static final long serialVersionUID = 1689305158269907021L;
 
@@ -38,7 +37,7 @@ public class Session extends Entity implements Serializable {
 	public static final long TIME_OUT = 1000 * 24 * 60 * 60;
 
 	/** 会话唯一标示 */
-	private String id;
+	private String sesId;
 
 	/** 会话创建时间 */
 	private Date createdTime;
@@ -49,17 +48,17 @@ public class Session extends Entity implements Serializable {
 	private Map<String, Object> attribute;
 	
 	public Session(String sessionId) {
-		this.id = sessionId;
+		this.sesId = sessionId;
 		createdTime = new Date();
 		accessTime = createdTime;
 	}
 
-	public String getId() {
-		return id;
+	public String getSesId() {
+		return sesId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setSesId(String sesId) {
+		this.sesId = sesId;
 	}
 
 	public Object getAttribute(String name) {

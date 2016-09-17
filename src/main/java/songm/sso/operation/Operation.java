@@ -19,9 +19,14 @@ package songm.sso.operation;
 import io.netty.channel.Channel;
 import songm.sso.entity.Protocol;
 
+/**
+ * 操作
+ * @author zhangsong
+ *
+ */
 public interface Operation {
 
-    public int operation();
+    public int handle();
 
     void action(Channel ch, Protocol pro);
 

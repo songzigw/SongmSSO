@@ -29,7 +29,12 @@ import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
-@Component
+/**
+ * 用户报道操作
+ * @author zhangsong
+ *
+ */
+@Component("reportOperation")
 public class ReportOperation extends AbstractOperation {
 
     private final Logger LOG = LoggerFactory.getLogger(ReportOperation.class);
@@ -38,7 +43,7 @@ public class ReportOperation extends AbstractOperation {
     private SessionService sessionService;
 
     @Override
-    public int operation() {
+    public int handle() {
         return Type.USER_REPORT.getValue();
     }
 
@@ -52,8 +57,8 @@ public class ReportOperation extends AbstractOperation {
         }
 
         String sessionId = new String(pro.getBody());
-        Session ses = sessionService.create(sessionId);
-        LOG.debug("User report sessionId:{}", ses.getId());
+        Session ses = sessionService.createSession(sessionId);
+        LOG.debug("User report sessionId:{}", ses.getSesId());
 
         pro.setOperation(Type.SESSION_UPDATE.getValue());
         pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
