@@ -14,12 +14,13 @@ public class SSOApplicationTest {
     private SSOApplication ssoApplication;
     
     @Test
-    public void startTest() {
+    public void testStart() {
         try {
             ssoApplication.start();
         } catch (SSOException e) {
             e.printStackTrace();
         }
+        ssoApplication.shutdown();
     }
     
     @Test

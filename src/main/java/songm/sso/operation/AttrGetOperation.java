@@ -33,7 +33,7 @@ import songm.sso.utils.JsonUtils;
  * @author zhangsong
  *
  */
-@Component("attrSetOperation")
+@Component("attrGetOperation")
 public class AttrGetOperation extends AbstractOperation {
 
     private final Logger LOG = LoggerFactory.getLogger(AttrGetOperation.class);
