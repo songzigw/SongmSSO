@@ -17,7 +17,9 @@
 package songm.sso.service.impl;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,8 @@ import songm.sso.utils.Sequence;
 public class SessionServiceImpl implements SessionService {
 
     private Map<String, Session> sesItems = new HashMap<String, Session>();
+    private Map<String, Set<Session>> userItems = new HashMap<String, Set<Session>>();
+
     @Autowired
     private SessionListenerManager sessionListenerManager;
 
@@ -50,6 +54,43 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    public Session login(String sessionId, String userId, String userInfo) {
+        Session ses = getSession(sessionId);
+        if (ses == null) {
+            sessionId = Sequence.getInstance().getSequence(28);
+            ses = new Session(sessionId);
+            sesItems.put(sessionId, ses);
+            sessionListenerManager.triggerCreate(ses);
+        }
+        
+        ses.setUserId(userId);
+        ses.setAttribute(Session.USER_INFO, userInfo);
+        addUserSession(userId, ses);
+        
+        return ses;
+    }
+    
+    public void addUserSession(String userId, Session ses) {
+        Set<Session> setSes = userItems.get(userId);
+        if (setSes == null) {
+            setSes = new HashSet<Session>();
+            userItems.put(userId, setSes);
+        }
+        setSes.remove(ses);
+        setSes.add(ses);
+    }
+
+    public void removeUserSession(String userId, Session ses) {
+        Set<Session> setSes = userItems.get(userId);
+        if (setSes != null) {
+            setSes.remove(ses);
+            if (setSes.isEmpty()) {
+                userItems.remove(userId);
+            }
+        }
+    }
+    
+    @Override
     public Session getSession(String sessionId) {
         if (sessionId == null) {
             return null;
@@ -63,8 +104,11 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void removeSession(String sessionId) {
-        Session s = sesItems.remove(sessionId);
-        sessionListenerManager.triggerRemove(s);
+        Session ses = sesItems.remove(sessionId);
+        if (ses != null) {
+            removeUserSession(ses.getUserId(), ses);
+            sessionListenerManager.triggerRemove(ses);
+        }
     }
 
     @Override
@@ -84,6 +128,16 @@ public class SessionServiceImpl implements SessionService {
             return null;
         }
         return ses.getAttribute(name);
+    }
+
+    @Override
+    public void editUser(String userId, String userInfo) {
+        Set<Session> setSes = userItems.get(userId);
+        if (setSes != null) {
+            for (Session ses : setSes) {
+                ses.setAttribute(Session.USER_INFO, userInfo);
+            }
+        }
     }
 
 }

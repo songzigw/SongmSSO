@@ -43,7 +43,7 @@ public class AttrGetOperation extends AbstractOperation {
 
     @Override
     public int handle() {
-        return Type.SES_ATTR_GET.getValue();
+        return Type.SESSION_ATTR_GET.getValue();
     }
 
     @Override

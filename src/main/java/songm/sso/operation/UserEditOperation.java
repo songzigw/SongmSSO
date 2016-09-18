@@ -23,38 +23,44 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.entity.Attribute;
+import songm.sso.SSOException;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
- * Session属性操作
+ * 用户报道操作
  * @author zhangsong
  *
  */
-@Component("attrSetOperation")
-public class AttrSetOperation extends AbstractOperation {
+@Component("reportOperation")
+public class UserEditOperation extends AbstractOperation {
 
-    private final Logger LOG = LoggerFactory.getLogger(AttrSetOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(UserEditOperation.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
     public int handle() {
-        return Type.SESSION_ATTR_SET.getValue();
+        return Type.USER_EDIT.getValue();
     }
 
     @Override
     public void action(Channel ch, Protocol pro) {
-        super.action(ch, pro);
+        try {
+            this.checkAuth(ch);
+        } catch (SSOException e) {
+            ch.close().syncUninterruptibly();
+            return;
+        }
 
-        Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
-        sessionService.setAttribute(attr.getSesId(), attr.getKey(), attr.getValue());
-        LOG.debug("User update session:{}", attr.getSesId());
+        User user = JsonUtils.fromJson(pro.getBody(), User.class);
+        sessionService.editUser(user.getUserId(), user.getUserInfo());
+        LOG.debug("User Info eidt: {}", user);
 
-        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
+        pro.setBody(JsonUtils.toJson(user, User.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

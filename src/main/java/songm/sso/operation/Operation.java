@@ -36,6 +36,12 @@ public interface Operation {
 
         /** 用户报道 */
         USER_REPORT(2),
+        /** 用户登入 */
+        USER_LOGIN(8),
+        /** 用户退出 */
+        USER_LOGOUT(9),
+        /** 用户信息编辑 */
+        USER_EDIT(10),
 
         /** Session Create */
         SESSION_CREATE(3),
@@ -43,11 +49,12 @@ public interface Operation {
         SESSION_UPDATE(4),
         /** Session Revove */
         SESSION_REMOVE(5),
-        
         /** Session属性设置 */
-        SES_ATTR_SET(6),
+        SESSION_ATTR_SET(6),
         /** Session属性获取 */
-        SES_ATTR_GET(7);
+        SESSION_ATTR_GET(7),
+        /** Session属性获取 */
+        SESSION_GET(11);
 
         private final int value;
 

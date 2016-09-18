@@ -15,6 +15,7 @@ public class SSOApplicationTest {
     
     @Test
     public void testStart() {
+        ssoApplication.shutdown();
         try {
             ssoApplication.start();
         } catch (SSOException e) {
@@ -25,6 +26,7 @@ public class SSOApplicationTest {
     
     @Test
     public void testRestart() {
+        ssoApplication.shutdown();
         try {
             ssoApplication.restart();
         } catch (SSOException e) {

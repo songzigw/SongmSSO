@@ -63,4 +63,21 @@ public interface SessionService {
      * @return
      */
     public Object getAttribute(String sessionId, String name);
+    
+    /**
+     * 用户登入
+     * @param sessionId
+     * @param userId
+     * @param userInfo
+     * @return
+     */
+    public Session login(String sessionId, String userId, String userInfo);
+
+    /**
+     * 编辑用户
+     * @param userId
+     * @param userInfo
+     */
+    public void editUser(String userId, String userInfo);
+
 }
