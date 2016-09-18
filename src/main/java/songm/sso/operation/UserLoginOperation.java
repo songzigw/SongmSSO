@@ -35,7 +35,7 @@ import songm.sso.utils.JsonUtils;
  * @author zhangsong
  *
  */
-@Component("reportOperation")
+@Component("userLoginOperation")
 public class UserLoginOperation extends AbstractOperation {
 
     private final Logger LOG = LoggerFactory.getLogger(UserLoginOperation.class);
