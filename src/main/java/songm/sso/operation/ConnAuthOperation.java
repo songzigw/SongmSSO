@@ -26,8 +26,6 @@ import org.springframework.stereotype.Component;
 import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
-import songm.sso.entity.Session;
-import songm.sso.event.SessionEvent;
 import songm.sso.event.SessionListener;
 import songm.sso.event.SessionListenerManager;
 import songm.sso.service.BackstageService;
@@ -82,44 +80,7 @@ public class ConnAuthOperation extends AbstractOperation {
 
     private void addListener(final Channel ch) {
         sessionListenerManager.addListener(new SessionListener() {
-            @Override
-            public void onCreate(SessionEvent event) {
-                Session s = event.getSession();
-
-                Protocol pro = new Protocol();
-                pro.setOperation(Type.SESSION_CREATE.getValue());
-                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
-
-                ch.writeAndFlush(pro);
-
-                LOG.debug("On session create... {}", pro);
-            }
-
-            @Override
-            public void onUpdate(SessionEvent event) {
-                Session s = event.getSession();
-
-                Protocol pro = new Protocol();
-                pro.setOperation(Type.SESSION_UPDATE.getValue());
-                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
-
-                ch.writeAndFlush(pro);
-
-                LOG.debug("On session update... {}", pro);
-            }
-
-            @Override
-            public void onRemove(SessionEvent event) {
-                Session s = event.getSession();
-
-                Protocol pro = new Protocol();
-                pro.setOperation(Type.SESSION_REMOVE.getValue());
-                pro.setBody(JsonUtils.toJson(s, Backstage.class).getBytes());
-
-                ch.writeAndFlush(pro);
-
-                LOG.debug("On session remove... {}", pro);
-            }
+            
         });
     }
 

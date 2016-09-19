@@ -49,7 +49,6 @@ public class SessionServiceImpl implements SessionService {
         ses = new Session(sessionId);
         sesItems.put(sessionId, ses);
 
-        sessionListenerManager.triggerCreate(ses);
         return ses;
     }
 
@@ -60,7 +59,6 @@ public class SessionServiceImpl implements SessionService {
             sessionId = Sequence.getInstance().getSequence(28);
             ses = new Session(sessionId);
             sesItems.put(sessionId, ses);
-            sessionListenerManager.triggerCreate(ses);
         }
         
         ses.setUserId(userId);
@@ -107,7 +105,6 @@ public class SessionServiceImpl implements SessionService {
         Session ses = sesItems.remove(sessionId);
         if (ses != null) {
             removeUserSession(ses.getUserId(), ses);
-            sessionListenerManager.triggerRemove(ses);
         }
     }
 
@@ -118,7 +115,6 @@ public class SessionServiceImpl implements SessionService {
             return;
         }
         ses.setAttribute(name, obj);
-        sessionListenerManager.triggerUpdate(ses);
     }
 
     @Override

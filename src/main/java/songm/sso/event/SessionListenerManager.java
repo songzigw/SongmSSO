@@ -66,13 +66,13 @@ public class SessionListenerManager {
         Iterator<SessionListener> iter = listeners.iterator();
         EventType type = event.getSource();
         while (iter.hasNext()) {
-            SessionListener listener = (SessionListener) iter.next();
+            //SessionListener listener = (SessionListener) iter.next();
             if (EventType.CREATE.equals(type)) {
-                listener.onCreate(event);
+                //listener.onCreate(event);
             } else if (EventType.UPDATE.equals(type)) {
-                listener.onUpdate(event);
+                //listener.onUpdate(event);
             } else if (EventType.UPDATE.equals(type)) {
-                listener.onRemove(event);
+                //listener.onRemove(event);
             }
         }
     }

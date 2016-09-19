@@ -44,16 +44,16 @@ public interface Operation {
         USER_EDIT(10),
 
         /** Session Create */
-        SESSION_CREATE(3),
+        //SESSION_CREATE(3),
         /** Session Update */
-        SESSION_UPDATE(4),
+        //SESSION_UPDATE(4),
         /** Session Revove */
-        SESSION_REMOVE(5),
+        //SESSION_REMOVE(5),
         /** Session属性设置 */
         SESSION_ATTR_SET(6),
         /** Session属性获取 */
         SESSION_ATTR_GET(7),
-        /** Session属性获取 */
+        /** Session对象获取 */
         SESSION_GET(11);
 
         private final int value;
