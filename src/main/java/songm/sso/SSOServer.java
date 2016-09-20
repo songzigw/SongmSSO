@@ -17,6 +17,7 @@
 
 package songm.sso;
 
+
 /**
  * 单点登入服务接口
  *
@@ -27,9 +28,26 @@ package songm.sso;
  */
 public interface SSOServer {
 
+    /**
+     * 开启服务
+     * @throws IMException
+     */
     void start() throws SSOException;
 
+    /**
+     * 重启服务
+     * @throws IMException
+     */
     void restart() throws SSOException;
 
+    /**
+     * 关闭服务
+     */
     void shutdown();
+    
+    /**
+     * 服务是否正在运行
+     * @return
+     */
+    //public boolean isRunning();
 }
