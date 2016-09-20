@@ -58,7 +58,7 @@ public class SessionGetOperation extends AbstractOperation {
 
         Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
         ses = sessionService.getSession(ses.getSesId());
-        LOG.debug("SessionId: {}", ses.getSesId());
+        LOG.debug("SessionGetOperation: {}", ses.getSesId());
 
         pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);

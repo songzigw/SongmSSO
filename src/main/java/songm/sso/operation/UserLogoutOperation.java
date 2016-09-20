@@ -24,8 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.SSOException;
+import songm.sso.entity.Entity;
 import songm.sso.entity.Protocol;
-import songm.sso.entity.Session;
+import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
@@ -56,11 +57,12 @@ public class UserLogoutOperation extends AbstractOperation {
             return;
         }
 
-        Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
-        sessionService.removeSession(ses.getSesId());
-        LOG.debug("User logout sessionId:{}", ses.getSesId());
+        User u = JsonUtils.fromJson(pro.getBody(), User.class);
+        sessionService.removeSession(u.getSesId());
+        LOG.debug("UserLogoutOperation: {}", u.getSesId());
 
-        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
+        Entity ent = new Entity();
+        pro.setBody(JsonUtils.toJson(ent, Entity.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

@@ -59,7 +59,7 @@ public class UserLoginOperation extends AbstractOperation {
 
         User u = JsonUtils.fromJson(pro.getBody(), User.class);
         Session ses = sessionService.login(u.getSesId(), u.getUserId(), u.getUserInfo());
-        LOG.debug("User login sessionId:{}", ses.getSesId());
+        LOG.debug("UserLoginOperation: {}", ses.getSesId());
 
         pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);

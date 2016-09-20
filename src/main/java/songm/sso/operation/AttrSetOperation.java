@@ -52,7 +52,7 @@ public class AttrSetOperation extends AbstractOperation {
 
         Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
         sessionService.setAttribute(attr.getSesId(), attr.getKey(), attr.getValue());
-        LOG.debug("User update session:{}", attr.getSesId());
+        LOG.debug("AttrSetOperation: {}", attr.getSesId());
 
         pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
         ch.writeAndFlush(pro);

@@ -58,7 +58,7 @@ public class ReportOperation extends AbstractOperation {
 
         Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
         ses = sessionService.createSession(ses.getSesId());
-        LOG.debug("User report sessionId:{}", ses.getSesId());
+        LOG.debug("ReportOperation: {}", ses.getSesId());
 
         pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);

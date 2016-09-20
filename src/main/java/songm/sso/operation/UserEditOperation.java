@@ -58,7 +58,7 @@ public class UserEditOperation extends AbstractOperation {
 
         User user = JsonUtils.fromJson(pro.getBody(), User.class);
         sessionService.editUser(user.getUserId(), user.getUserInfo());
-        LOG.debug("User Info eidt: {}", user);
+        LOG.debug("UserEditOperation: {}", user.getUserId());
 
         pro.setBody(JsonUtils.toJson(user, User.class).getBytes());
         ch.writeAndFlush(pro);

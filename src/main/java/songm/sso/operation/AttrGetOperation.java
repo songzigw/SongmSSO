@@ -53,7 +53,7 @@ public class AttrGetOperation extends AbstractOperation {
         Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
         String value = (String)sessionService.getAttribute(attr.getSesId(), attr.getKey());
         attr.setValue(value);
-        LOG.debug("User update session:{}", attr.getSesId());
+        LOG.debug("AttrGetOperation: {}", attr.getSesId());
 
         pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
         ch.writeAndFlush(pro);
