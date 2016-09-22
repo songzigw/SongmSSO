@@ -16,22 +16,21 @@
  */
 package songm.sso.server;
 
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import songm.sso.entity.Protocol;
 import songm.sso.operation.Operation;
 import songm.sso.operation.OperationManager;
-import songm.sso.service.BackstageService;
 
 /**
  * 服务器消息处理者
+ * 
  * @author zhangsong
  *
  */
@@ -39,33 +38,28 @@ import songm.sso.service.BackstageService;
 @ChannelHandler.Sharable
 public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
 
-    private static final Logger LOG = LoggerFactory
-            .getLogger(SSOServerHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SSOServerHandler.class);
 
     @Autowired
     private OperationManager operationManager;
-    @Autowired
-    private BackstageService authService;
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, Protocol pro)
-            throws Exception {
-        Operation op = operationManager.find(pro.getOperation());
-        if (op != null) {
-            op.action(ctx.channel(), pro);
-        } else {
-            LOG.warn("Not found operation: " + pro.getOperation());
-        }
+    protected void messageReceived(ChannelHandlerContext ctx, Protocol pro) throws Exception {
+	Operation op = operationManager.find(pro.getOperation());
+	if (op != null) {
+	    op.action(ctx.channel(), pro);
+	} else {
+	    LOG.warn("Not found operation: " + pro.getOperation());
+	}
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        LOG.debug("HandlerRemoved", ctx);
+	LOG.debug("HandlerRemoved", ctx);
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-            throws Exception {
-        LOG.error("ExceptionCaught", cause);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+	LOG.error("ExceptionCaught", cause);
     }
 }
