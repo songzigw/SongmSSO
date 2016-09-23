@@ -59,7 +59,7 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
                 ent.setErrorCode(e.getErrorCode().name());
                 pro.setBody(JsonUtils.toJsonBytes(ent, ent.getClass()));
                 ctx.writeAndFlush(pro);
-                ctx.close().syncUninterruptibly();
+                // ctx.close().syncUninterruptibly();
             }
         } else {
             LOG.warn("Not found operation: " + pro.getOperation());
