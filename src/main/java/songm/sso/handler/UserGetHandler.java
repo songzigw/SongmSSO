@@ -36,7 +36,7 @@ import songm.sso.utils.JsonUtils;
  * @author zhangsong
  *
  */
-@Component("userEditHandler")
+@Component("userGetHandler")
 public class UserGetHandler extends AbstractHandler {
 
     private final Logger LOG = LoggerFactory.getLogger(UserGetHandler.class);
