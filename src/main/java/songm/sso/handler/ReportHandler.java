@@ -14,7 +14,7 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
 
@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.SSOException;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
 import songm.sso.entity.Session;
-import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
@@ -35,31 +35,26 @@ import songm.sso.utils.JsonUtils;
  * @author zhangsong
  *
  */
-@Component("userLoginOperation")
-public class UserLoginOperation extends AbstractOperation {
+@Component("reportHandler")
+public class ReportHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(UserLoginOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(ReportHandler.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
-    public int handle() {
-        return Type.USER_LOGIN.getValue();
+    public int operation() {
+        return Operation.USER_REPORT.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) {
-        try {
-            this.checkAuth(ch);
-        } catch (SSOException e) {
-            ch.close().syncUninterruptibly();
-            return;
-        }
+    public void action(Channel ch, Protocol pro) throws SSOException {
+        Backstage back = this.checkAuth(ch);
 
-        User u = JsonUtils.fromJson(pro.getBody(), User.class);
-        Session ses = sessionService.login(u.getSesId(), u.getUserId(), u.getUserInfo());
-        LOG.debug("UserLoginOperation: {}", ses.getSesId());
+        Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
+        ses = sessionService.createSession(ses.getSesId());
+        LOG.debug("ReportHandler [BackId: {}, SesId: {}]", back.getBackId(), ses.getSesId());
 
         pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);

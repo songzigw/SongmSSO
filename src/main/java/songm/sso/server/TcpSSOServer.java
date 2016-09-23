@@ -79,7 +79,7 @@ public class TcpSSOServer implements SSOServer {
                 }
             });
         }
-        LOG.info("Start TcpSSOServer Port:{}", port);
+        LOG.info("Start TcpSSOServer Port: {}", port);
     }
 
     @Override

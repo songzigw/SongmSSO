@@ -24,9 +24,13 @@ import org.springframework.stereotype.Component;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import songm.sso.SSOException;
+import songm.sso.entity.Attribute;
+import songm.sso.entity.Entity;
 import songm.sso.entity.Protocol;
-import songm.sso.operation.Operation;
-import songm.sso.operation.OperationManager;
+import songm.sso.handler.Handler;
+import songm.sso.handler.HandlerManager;
+import songm.sso.utils.JsonUtils;
 
 /**
  * 服务器消息处理者
@@ -41,25 +45,35 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
     private static final Logger LOG = LoggerFactory.getLogger(SSOServerHandler.class);
 
     @Autowired
-    private OperationManager operationManager;
+    private HandlerManager handlerManager;
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Protocol pro) throws Exception {
-	Operation op = operationManager.find(pro.getOperation());
-	if (op != null) {
-	    op.action(ctx.channel(), pro);
-	} else {
-	    LOG.warn("Not found operation: " + pro.getOperation());
-	}
+        // 找到对应的消息处理器
+        Handler her = handlerManager.find(pro.getOperation());
+        if (her != null) {
+            try {
+                her.action(ctx.channel(), pro);
+            } catch (SSOException e) {
+                Entity ent = new Entity();
+                ent.setSucceed(false);
+                ent.setErrorCode(e.getErrorCode().name());
+                pro.setBody(JsonUtils.toJson(ent, Attribute.class).getBytes());
+                ctx.writeAndFlush(pro);
+                ctx.close().syncUninterruptibly();
+            }
+        } else {
+            LOG.warn("Not found operation: " + pro.getOperation());
+        }
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-	LOG.debug("HandlerRemoved", ctx);
+        LOG.debug("HandlerRemoved", ctx);
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-	LOG.error("ExceptionCaught", cause);
+        LOG.error("ExceptionCaught", cause);
     }
 }

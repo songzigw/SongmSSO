@@ -14,21 +14,21 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
 import songm.sso.Constants;
 import songm.sso.SSOException;
 import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
-import songm.sso.entity.Protocol;
 
 /**
- * 基础操作类
+ * 基础消息处理器
+ * 
  * @author zhangsong
  *
  */
-public abstract class AbstractOperation implements Operation {
+public abstract class AbstractHandler implements Handler {
 
     protected Backstage getBackstage(Channel ch) {
         return ch.attr(Constants.KEY_BACKSTAGE).get();
@@ -38,19 +38,12 @@ public abstract class AbstractOperation implements Operation {
         ch.attr(Constants.KEY_BACKSTAGE).set(back);
     }
 
-    protected void checkAuth(Channel ch) throws SSOException {
-        if(getBackstage(ch) == null) {
+    protected Backstage checkAuth(Channel ch) throws SSOException {
+        Backstage back = getBackstage(ch);
+        if (back == null) {
             throw new SSOException(ErrorCode.AUTH_DISABLED, "Auth failure");
         }
+        return back;
     }
 
-    @Override
-    public void action(Channel ch, Protocol pro) {
-        try {
-            this.checkAuth(ch);
-        } catch (SSOException e) {
-            ch.close().syncUninterruptibly();
-            return;
-        }
-    }
 }

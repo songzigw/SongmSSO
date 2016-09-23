@@ -14,48 +14,54 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
-
-import io.netty.channel.Channel;
+package songm.sso.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.entity.Attribute;
+import io.netty.channel.Channel;
+import songm.sso.SSOException;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Session;
+import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
- * Session属性操作
+ * 用户报道操作
+ * 
  * @author zhangsong
  *
  */
-@Component("attrGetOperation")
-public class AttrGetOperation extends AbstractOperation {
+@Component("userEditHandler")
+public class UserGetHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(AttrGetOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(UserGetHandler.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
-    public int handle() {
-        return Type.SESSION_ATTR_GET.getValue();
+    public int operation() {
+        return Operation.USER_GET.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) {
-        super.action(ch, pro);
+    public void action(Channel ch, Protocol pro) throws SSOException {
+        Backstage back = this.checkAuth(ch);
 
-        Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
-        String value = (String)sessionService.getAttribute(attr.getSesId(), attr.getKey());
-        attr.setValue(value);
-        LOG.debug("AttrGetOperation: {}", attr.getSesId());
+        User u = JsonUtils.fromJson(pro.getBody(), User.class);
+        Session ses = sessionService.getSession(u.getSesId());
+        if (ses != null) {
+            u.setUserId(ses.getUserId());
+            u.setUserInfo((String) ses.getAttribute(User.INFO));
+        }
+        LOG.debug("UserGetHandler [BackId: {}, SesId: {}]", back.getBackId(), u.getSesId());
 
-        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
+        pro.setBody(JsonUtils.toJson(u, User.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

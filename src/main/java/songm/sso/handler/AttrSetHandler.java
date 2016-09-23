@@ -14,7 +14,7 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
 
@@ -24,43 +24,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.SSOException;
+import songm.sso.entity.Attribute;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
-import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
- * 用户报道操作
+ * Session属性操作
+ * 
  * @author zhangsong
  *
  */
-@Component("sessionGetOperation")
-public class SessionGetOperation extends AbstractOperation {
+@Component("attrSetHandler")
+public class AttrSetHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(SessionGetOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(AttrSetHandler.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
-    public int handle() {
-        return Type.SESSION_GET.getValue();
+    public int operation() {
+        return Operation.SESSION_ATTR_SET.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) {
-        try {
-            this.checkAuth(ch);
-        } catch (SSOException e) {
-            ch.close().syncUninterruptibly();
-            return;
-        }
+    public void action(Channel ch, Protocol pro) throws SSOException {
+        Backstage back = this.checkAuth(ch);
 
-        Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
-        ses = sessionService.getSession(ses.getSesId());
-        LOG.debug("SessionGetOperation: {}", ses.getSesId());
+        Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
+        sessionService.setAttribute(attr.getSesId(), attr.getKey(), attr.getValue());
+        LOG.debug("AttrSetHandler [BackId: {}, SesId: {}]", back.getBackId(), attr.getSesId());
 
-        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
+        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

@@ -80,7 +80,7 @@ public class WsocketSSOServer implements SSOServer {
                 }
             });
         }
-        LOG.info("Start WebSocketSSOServer Port:{}", port);
+        LOG.info("Start WebSocketSSOServer Port: {}", port);
     }
 
     @Override

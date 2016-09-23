@@ -18,31 +18,40 @@ package songm.sso.entity;
 
 /**
  * 用户
+ * 
  * @author zhangsong
  *
  */
 public class User extends Entity {
 
     private static final long serialVersionUID = 6942944866458532639L;
-    
+
+    public static final String INFO = "user_info";
+
     private String sesId;
     private String userId;
     private String userInfo;
+
     public String getUserId() {
         return userId;
     }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public String getUserInfo() {
         return userInfo;
     }
+
     public void setUserInfo(String userInfo) {
         this.userInfo = userInfo;
     }
+
     public String getSesId() {
         return sesId;
     }
+
     public void setSesId(String sesId) {
         this.sesId = sesId;
     }

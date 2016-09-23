@@ -14,7 +14,7 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
 
@@ -23,38 +23,40 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import songm.sso.entity.Attribute;
+import songm.sso.SSOException;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
- * Session属性操作
+ * 用户报道操作
  * @author zhangsong
  *
  */
-@Component("attrSetOperation")
-public class AttrSetOperation extends AbstractOperation {
+@Component("sessionGetHandler")
+public class SessionGetHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(AttrSetOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(SessionGetHandler.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
-    public int handle() {
-        return Type.SESSION_ATTR_SET.getValue();
+    public int operation() {
+        return Operation.SESSION_GET.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) {
-        super.action(ch, pro);
+    public void action(Channel ch, Protocol pro) throws SSOException {
+        Backstage back = this.checkAuth(ch);
 
-        Attribute attr = JsonUtils.fromJson(pro.getBody(), Attribute.class);
-        sessionService.setAttribute(attr.getSesId(), attr.getKey(), attr.getValue());
-        LOG.debug("AttrSetOperation: {}", attr.getSesId());
+        Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
+        ses = sessionService.getSession(ses.getSesId());
+        LOG.debug("SessionGetHandler [BackId: {}, SesId: {}]", back.getBackId(), ses.getSesId());
 
-        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
+        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

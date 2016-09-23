@@ -14,55 +14,50 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
-
-import io.netty.channel.Channel;
+package songm.sso.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.netty.channel.Channel;
 import songm.sso.SSOException;
-import songm.sso.entity.Entity;
+import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Session;
 import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
 /**
  * 用户报道操作
+ * 
  * @author zhangsong
  *
  */
-@Component("userLogoutOperation")
-public class UserLogoutOperation extends AbstractOperation {
+@Component("userLoginHandler")
+public class UserLoginHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(UserLogoutOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(UserLoginHandler.class);
 
     @Autowired
     private SessionService sessionService;
 
     @Override
-    public int handle() {
-        return Type.USER_LOGOUT.getValue();
+    public int operation() {
+        return Operation.USER_LOGIN.getValue();
     }
 
     @Override
-    public void action(Channel ch, Protocol pro) {
-        try {
-            this.checkAuth(ch);
-        } catch (SSOException e) {
-            ch.close().syncUninterruptibly();
-            return;
-        }
+    public void action(Channel ch, Protocol pro) throws SSOException {
+        Backstage back = this.checkAuth(ch);
 
         User u = JsonUtils.fromJson(pro.getBody(), User.class);
-        sessionService.removeSession(u.getSesId());
-        LOG.debug("UserLogoutOperation: {}", u.getSesId());
+        Session ses = sessionService.login(u.getSesId(), u.getUserId(), u.getUserInfo());
+        LOG.debug("UserLoginHandler [BackId: {}, SesId: {}]", back.getBackId(), u.getSesId());
 
-        Entity ent = new Entity();
-        pro.setBody(JsonUtils.toJson(ent, Entity.class).getBytes());
+        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
         ch.writeAndFlush(pro);
     }
 

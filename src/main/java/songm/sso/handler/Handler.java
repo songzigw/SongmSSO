@@ -14,23 +14,25 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
+import songm.sso.SSOException;
 import songm.sso.entity.Protocol;
 
 /**
- * 操作
+ * 消息处理器
+ * 
  * @author zhangsong
  *
  */
-public interface Operation {
+public interface Handler {
 
-    public int handle();
+    public int operation();
 
-    void action(Channel ch, Protocol pro);
+    void action(Channel ch, Protocol pro) throws SSOException;
 
-    public static enum Type {
+    public static enum Operation {
         /** 连接授权 */
         CONN_AUTH(1),
 
@@ -42,13 +44,15 @@ public interface Operation {
         USER_LOGOUT(9),
         /** 用户信息编辑 */
         USER_EDIT(10),
+        /** 获取用户信息 */
+        USER_GET(12),
 
         /** Session Create */
-        //SESSION_CREATE(3),
+        // SESSION_CREATE(3),
         /** Session Update */
-        //SESSION_UPDATE(4),
+        // SESSION_UPDATE(4),
         /** Session Revove */
-        //SESSION_REMOVE(5),
+        // SESSION_REMOVE(5),
         /** Session属性设置 */
         SESSION_ATTR_SET(6),
         /** Session属性获取 */
@@ -58,7 +62,7 @@ public interface Operation {
 
         private final int value;
 
-        private Type(int value) {
+        private Operation(int value) {
             this.value = value;
         }
 
@@ -66,8 +70,8 @@ public interface Operation {
             return value;
         }
 
-        public static Type getInstance(int v) {
-            for (Type type : Type.values()) {
+        public static Operation getInstance(int v) {
+            for (Operation type : Operation.values()) {
                 if (type.getValue() == v) {
                     return type;
                 }

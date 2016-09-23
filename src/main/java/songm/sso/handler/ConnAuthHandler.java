@@ -14,7 +14,7 @@
  * limitations under the License.
  * 
  */
-package songm.sso.operation;
+package songm.sso.handler;
 
 import io.netty.channel.Channel;
 
@@ -36,10 +36,10 @@ import songm.sso.utils.JsonUtils;
  * @author zhangsong
  *
  */
-@Component("connAuthOperation")
-public class ConnAuthOperation extends AbstractOperation {
+@Component("connAuthHandler")
+public class ConnAuthHandler extends AbstractHandler {
 
-    private final Logger LOG = LoggerFactory.getLogger(ConnAuthOperation.class);
+    private final Logger LOG = LoggerFactory.getLogger(ConnAuthHandler.class);
 
     @Autowired
     private BackstageService backstageService;
@@ -47,8 +47,8 @@ public class ConnAuthOperation extends AbstractOperation {
     private SessionListenerManager sessionListenerManager;
 
     @Override
-    public int handle() {
-        return Type.CONN_AUTH.getValue();
+    public int operation() {
+        return Operation.CONN_AUTH.getValue();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ConnAuthOperation extends AbstractOperation {
             addListener(ch);
         } else {
             // 授权失败
-            LOG.debug("Auth fail to Backstage: {}", back.getBackId());
+            LOG.debug("Auth failure to Backstage: {}", back.getBackId());
 
             back.setSucceed(false);
             back.setErrorCode(ErrorCode.AUTH_FAILURE.name());

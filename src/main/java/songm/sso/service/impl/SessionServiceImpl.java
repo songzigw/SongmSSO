@@ -21,11 +21,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import songm.sso.entity.Session;
-import songm.sso.event.SessionListenerManager;
+import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.Sequence;
 
@@ -35,8 +34,8 @@ public class SessionServiceImpl implements SessionService {
     private Map<String, Session> sesItems = new HashMap<String, Session>();
     private Map<String, Set<Session>> userItems = new HashMap<String, Set<Session>>();
 
-    @Autowired
-    private SessionListenerManager sessionListenerManager;
+    // @Autowired
+    // private SessionListenerManager sessionListenerManager;
 
     @Override
     public Session createSession(String sessionId) {
@@ -60,14 +59,14 @@ public class SessionServiceImpl implements SessionService {
             ses = new Session(sessionId);
             sesItems.put(sessionId, ses);
         }
-        
+
         ses.setUserId(userId);
-        ses.setAttribute(Session.USER_INFO, userInfo);
+        ses.setAttribute(User.INFO, userInfo);
         addUserSession(userId, ses);
-        
+
         return ses;
     }
-    
+
     public void addUserSession(String userId, Session ses) {
         Set<Session> setSes = userItems.get(userId);
         if (setSes == null) {
@@ -87,7 +86,7 @@ public class SessionServiceImpl implements SessionService {
             }
         }
     }
-    
+
     @Override
     public Session getSession(String sessionId) {
         if (sessionId == null) {
@@ -131,7 +130,7 @@ public class SessionServiceImpl implements SessionService {
         Set<Session> setSes = userItems.get(userId);
         if (setSes != null) {
             for (Session ses : setSes) {
-                ses.setAttribute(Session.USER_INFO, userInfo);
+                ses.setAttribute(User.INFO, userInfo);
             }
         }
     }

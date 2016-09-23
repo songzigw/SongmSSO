@@ -23,75 +23,73 @@ import java.util.Map;
 /**
  * 用户与服务端的会话
  *
- * @author  zhangsong
- * @since   0.1, 2016-7-29
+ * @author zhangsong
+ * @since 0.1, 2016-7-29
  * @version 0.1
  * 
  */
 public class Session extends Entity {
 
     private static final long serialVersionUID = 1689305158269907021L;
-    
-    public static final String USER_INFO = "user_info";
 
     /** 默认超时间 */
-	public static final long TIME_OUT = 1000 * 24 * 60 * 60;
+    public static final long TIME_OUT = 1000 * 24 * 60 * 60;
 
-	/** 会话唯一标示 */
-	private String sesId;
-	
-	/** 用户ID */
-	private String userId;
+    /** 会话唯一标示 */
+    private String sesId;
 
-	/** 会话创建时间 */
-	private Date createdTime;
+    /** 用户ID */
+    private String userId;
 
-	/** 会话访问时间 */
-	private Date accessTime;
+    /** 会话创建时间 */
+    private Date createdTime;
 
-	private Map<String, Object> attribute;
-	
-	public Session(String sessionId) {
-		this.sesId = sessionId;
-		createdTime = new Date();
-		accessTime = createdTime;
-	}
+    /** 会话访问时间 */
+    private Date accessTime;
 
-	public String getSesId() {
-		return sesId;
-	}
+    private Map<String, Object> attribute;
 
-	public void setSesId(String sesId) {
-		this.sesId = sesId;
-	}
+    public Session(String sessionId) {
+        this.sesId = sessionId;
+        createdTime = new Date();
+        accessTime = createdTime;
+    }
 
-	public Object getAttribute(String name) {
-		if (attribute == null) {
-			return null;
-		}
-		return attribute.get(name);
-	}
+    public String getSesId() {
+        return sesId;
+    }
 
-	public void setAttribute(String name, Object value) {
-		if (attribute == null) {
-			attribute = new HashMap<String, Object>();
-		}
-		attribute.put(name, value);
-	}
+    public void setSesId(String sesId) {
+        this.sesId = sesId;
+    }
 
-	public void setCreatedTime(Date createdTime) {
-		this.createdTime = createdTime;
-	}
+    public Object getAttribute(String name) {
+        if (attribute == null) {
+            return null;
+        }
+        return attribute.get(name);
+    }
 
-	public void setAccessTime(Date accessTime) {
-		this.accessTime = accessTime;
-	}
+    public void setAttribute(String name, Object value) {
+        if (attribute == null) {
+            attribute = new HashMap<String, Object>();
+        }
+        attribute.put(name, value);
+    }
 
-	public long getCreatedTime() {
-		return createdTime.getTime();
-	}
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
 
-	public String getUserId() {
+    public void setAccessTime(Date accessTime) {
+        this.accessTime = accessTime;
+    }
+
+    public long getCreatedTime() {
+        return createdTime.getTime();
+    }
+
+    public String getUserId() {
         return userId;
     }
 
@@ -100,19 +98,19 @@ public class Session extends Entity {
     }
 
     public long getAccessTime() {
-		return accessTime.getTime();
-	}
+        return accessTime.getTime();
+    }
 
-	public void updateAccessTime() {
-		accessTime = new Date();
-	}
+    public void updateAccessTime() {
+        accessTime = new Date();
+    }
 
-	public boolean isTimeout() {
-		if (new Date().getTime() - accessTime.getTime() > TIME_OUT) {
-			return true;
-		}
-		return false;
-	}
+    public boolean isTimeout() {
+        if (new Date().getTime() - accessTime.getTime() > TIME_OUT) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public int hashCode() {
