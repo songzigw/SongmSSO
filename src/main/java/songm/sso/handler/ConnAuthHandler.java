@@ -55,12 +55,12 @@ public class ConnAuthHandler extends AbstractHandler {
     public void action(Channel ch, Protocol pro) {
         Backstage back = JsonUtils.fromJson(pro.getBody(), Backstage.class);
 
+        Result<Backstage> res = new Result<Backstage>();
         if (backstageService.auth(back)) {
             // 授权成功
             LOG.debug("Auth success to Backstage: {}", back.getBackId());
             setBackstage(ch, back);
 
-            Result<Backstage> res = new Result<Backstage>();
             res.setData(back);
             pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
             ch.writeAndFlush(pro);
@@ -70,7 +70,6 @@ public class ConnAuthHandler extends AbstractHandler {
             // 授权失败
             LOG.debug("Auth failure to Backstage: {}", back.getBackId());
 
-            Result<Backstage> res = new Result<Backstage>();
             res.setErrorCode(ErrorCode.AUTH_FAILURE.name());
             pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
             ch.writeAndFlush(pro);

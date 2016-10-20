@@ -4,15 +4,17 @@ import java.lang.reflect.Type;
 
 import com.google.gson.Gson;
 
+import songm.sso.entity.Result;
+
 public class JsonUtils {
 
     private static Gson gson = new Gson();
 
-    public static <T> String toJson(Object obj, Class<T> clazz) {
+    public static <T, E> String toJson(Result<E> obj, Class<T> clazz) {
         return gson.toJson(obj, clazz);
     }
 
-    public static <T> byte[] toJsonBytes(Object obj, Class<T> clazz) {
+    public static <T, E> byte[] toJsonBytes(Result<E> obj, Class<T> clazz) {
         String json = gson.toJson(obj, clazz);
         if (json == null) {
             return null;
