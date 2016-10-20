@@ -27,6 +27,7 @@ import songm.sso.SSOException;
 import songm.sso.entity.Attribute;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
 
@@ -58,7 +59,9 @@ public class AttrGetHandler extends AbstractHandler {
         attr.setValue(value);
         LOG.debug("AttrGetHandler [BackId: {}, SesId: {}]", back.getBackId(), attr.getSesId());
 
-        pro.setBody(JsonUtils.toJson(attr, Attribute.class).getBytes());
+        Result<Attribute> res = new Result<Attribute>();
+        res.setData(attr);
+        pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
         ch.writeAndFlush(pro);
     }
 

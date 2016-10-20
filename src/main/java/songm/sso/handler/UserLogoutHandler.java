@@ -24,8 +24,8 @@ import org.springframework.stereotype.Component;
 import io.netty.channel.Channel;
 import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
-import songm.sso.entity.Entity;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
@@ -57,8 +57,8 @@ public class UserLogoutHandler extends AbstractHandler {
         sessionService.removeSession(u.getSesId());
         LOG.debug("UserLogoutHandler [BackId: {}, SesId: {}]", back.getBackId(), u.getSesId());
 
-        Entity ent = new Entity();
-        pro.setBody(JsonUtils.toJson(ent, Entity.class).getBytes());
+        Result<Object> res = new Result<Object>();
+        pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
         ch.writeAndFlush(pro);
     }
 

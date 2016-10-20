@@ -16,6 +16,7 @@
  */
 package songm.sso.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import songm.sso.utils.Sequence;
@@ -28,7 +29,7 @@ import songm.sso.utils.Sequence;
  * @version 0.1
  * 
  */
-public class Backstage extends Entity {
+public class Backstage implements Serializable {
 
     private static final long serialVersionUID = -1017037420624867935L;
 

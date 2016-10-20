@@ -25,6 +25,7 @@ import io.netty.channel.Channel;
 import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.entity.Session;
 import songm.sso.entity.User;
 import songm.sso.service.SessionService;
@@ -57,7 +58,9 @@ public class UserLoginHandler extends AbstractHandler {
         Session ses = sessionService.login(u.getSesId(), u.getUserId(), u.getUserInfo());
         LOG.debug("UserLoginHandler [BackId: {}, SesId: {}]", back.getBackId(), u.getSesId());
 
-        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
+        Result<Session> res = new Result<Session>();
+        res.setData(ses);
+        pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
         ch.writeAndFlush(pro);
     }
 

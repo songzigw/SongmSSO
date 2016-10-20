@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.entity.Session;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
@@ -56,7 +57,9 @@ public class SessionGetHandler extends AbstractHandler {
         ses = sessionService.getSession(ses.getSesId());
         LOG.debug("SessionGetHandler [BackId: {}, SesId: {}]", back.getBackId(), ses.getSesId());
 
-        pro.setBody(JsonUtils.toJson(ses, Session.class).getBytes());
+        Result<Session> res = new Result<Session>();
+        res.setData(ses);
+        pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
         ch.writeAndFlush(pro);
     }
 

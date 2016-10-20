@@ -16,16 +16,16 @@
  */
 package songm.sso.handler;
 
-import io.netty.channel.Channel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import io.netty.channel.Channel;
 import songm.sso.SSOException.ErrorCode;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.event.SessionListener;
 import songm.sso.event.SessionListenerManager;
 import songm.sso.service.BackstageService;
@@ -60,7 +60,9 @@ public class ConnAuthHandler extends AbstractHandler {
             LOG.debug("Auth success to Backstage: {}", back.getBackId());
             setBackstage(ch, back);
 
-            pro.setBody(JsonUtils.toJson(back, Backstage.class).getBytes());
+            Result<Backstage> res = new Result<Backstage>();
+            res.setData(back);
+            pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
             ch.writeAndFlush(pro);
 
             addListener(ch);
@@ -68,9 +70,9 @@ public class ConnAuthHandler extends AbstractHandler {
             // 授权失败
             LOG.debug("Auth failure to Backstage: {}", back.getBackId());
 
-            back.setSucceed(false);
-            back.setErrorCode(ErrorCode.AUTH_FAILURE.name());
-            pro.setBody(JsonUtils.toJson(back, Backstage.class).getBytes());
+            Result<Backstage> res = new Result<Backstage>();
+            res.setErrorCode(ErrorCode.AUTH_FAILURE.name());
+            pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
             ch.writeAndFlush(pro);
 
             // 关闭连接

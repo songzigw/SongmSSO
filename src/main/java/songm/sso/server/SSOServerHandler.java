@@ -25,8 +25,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import songm.sso.SSOException;
-import songm.sso.entity.Entity;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.handler.Handler;
 import songm.sso.handler.HandlerManager;
 import songm.sso.utils.JsonUtils;
@@ -54,10 +54,10 @@ public class SSOServerHandler extends SimpleChannelInboundHandler<Protocol> {
             try {
                 her.action(ctx.channel(), pro);
             } catch (SSOException e) {
-                Entity ent = new Entity();
-                ent.setSucceed(false);
-                ent.setErrorCode(e.getErrorCode().name());
-                pro.setBody(JsonUtils.toJsonBytes(ent, ent.getClass()));
+                Result<Object> res = new Result<Object>();
+                res.setSucceed(false);
+                res.setErrorCode(e.getErrorCode().name());
+                pro.setBody(JsonUtils.toJsonBytes(res, res.getClass()));
                 ctx.writeAndFlush(pro);
                 // ctx.close().syncUninterruptibly();
             }

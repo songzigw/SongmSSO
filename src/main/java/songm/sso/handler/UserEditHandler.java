@@ -25,6 +25,7 @@ import io.netty.channel.Channel;
 import songm.sso.SSOException;
 import songm.sso.entity.Backstage;
 import songm.sso.entity.Protocol;
+import songm.sso.entity.Result;
 import songm.sso.entity.User;
 import songm.sso.service.SessionService;
 import songm.sso.utils.JsonUtils;
@@ -56,7 +57,9 @@ public class UserEditHandler extends AbstractHandler {
         sessionService.editUser(u.getUserId(), u.getUserInfo());
         LOG.debug("UserEditHandler [BackId: {}, SesId: {}]", back.getBackId(), u.getSesId());
 
-        pro.setBody(JsonUtils.toJson(u, User.class).getBytes());
+        Result<User> res = new Result<User>();
+        res.setData(u);
+        pro.setBody(JsonUtils.toJsonBytes(res, Result.class));
         ch.writeAndFlush(pro);
     }
 
