@@ -94,7 +94,7 @@ public class SessionServiceImpl implements SessionService {
         }
         Session s = sesItems.get(sessionId);
         if (s != null) {
-            s.updateAccessTime();
+            s.updateAccess();
         }
         return s;
     }

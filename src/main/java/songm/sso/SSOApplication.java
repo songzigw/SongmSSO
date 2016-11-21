@@ -20,14 +20,9 @@ public class SSOApplication implements SSOServer {
     private static Logger LOG = LoggerFactory.getLogger(SSOApplication.class);
 
     private SSOServer tcpSSOServer;
-    private SSOServer wsocketSSOServer;
 
     public void setTcpSSOServer(SSOServer tcpSSOServer) {
         this.tcpSSOServer = tcpSSOServer;
-    }
-
-    public void setWsocketSSOServer(SSOServer wsocketSSOServer) {
-        this.wsocketSSOServer = wsocketSSOServer;
     }
 
     public void init() {
@@ -40,31 +35,19 @@ public class SSOApplication implements SSOServer {
     
     @Override
     public void start() throws SSOException {
-        LOG.info("SongSSO Server starting");
-
         tcpSSOServer.start();
-        wsocketSSOServer.start();
-
         LOG.info("SongSSO Server start finish");
     }
 
     @Override
     public void restart() throws SSOException {
-        LOG.info("SongSSO Server restart...");
-
         tcpSSOServer.restart();
-        wsocketSSOServer.restart();
-
         LOG.info("SongSSO Server restart finish");
     }
 
     @Override
     public void shutdown() {
-        LOG.info("SongSSO Server shutdown...");
-
         tcpSSOServer.shutdown();
-        wsocketSSOServer.shutdown();
-
         LOG.info("SongSSO Server shutdown finish");
     }
 }

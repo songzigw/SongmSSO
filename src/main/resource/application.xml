@@ -18,6 +18,5 @@
 	<bean id="ssoApplication" class="songm.sso.SSOApplication"
 		init-method="init">
 		<property name="tcpSSOServer" ref="tcpSSOServer"></property>
-		<property name="wsocketSSOServer" ref="wsocketSSOServer"></property>
 	</bean>
 </beans>

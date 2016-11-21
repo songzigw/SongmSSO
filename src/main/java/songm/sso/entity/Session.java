@@ -43,17 +43,17 @@ public class Session implements Serializable {
     private String userId;
 
     /** 会话创建时间 */
-    private Date createdTime;
+    private Date created;
 
     /** 会话访问时间 */
-    private Date accessTime;
+    private Date access;
 
     private Map<String, Object> attribute;
 
     public Session(String sessionId) {
         this.sesId = sessionId;
-        createdTime = new Date();
-        accessTime = createdTime;
+        created = new Date();
+        access = created;
     }
 
     public String getSesId() {
@@ -78,16 +78,16 @@ public class Session implements Serializable {
         attribute.put(name, value);
     }
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
-    public void setAccessTime(Date accessTime) {
-        this.accessTime = accessTime;
+    public void setAccess(Date access) {
+        this.access = access;
     }
 
-    public long getCreatedTime() {
-        return createdTime.getTime();
+    public long getCreated() {
+        return created.getTime();
     }
 
     public String getUserId() {
@@ -98,16 +98,16 @@ public class Session implements Serializable {
         this.userId = userId;
     }
 
-    public long getAccessTime() {
-        return accessTime.getTime();
+    public long getAccess() {
+        return access.getTime();
     }
 
-    public void updateAccessTime() {
-        accessTime = new Date();
+    public void updateAccess() {
+        access = new Date();
     }
 
     public boolean isTimeout() {
-        if (new Date().getTime() - accessTime.getTime() > TIME_OUT) {
+        if (new Date().getTime() - access.getTime() > TIME_OUT) {
             return true;
         }
         return false;

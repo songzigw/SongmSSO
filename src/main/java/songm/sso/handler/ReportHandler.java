@@ -33,6 +33,7 @@ import songm.sso.utils.JsonUtils;
 
 /**
  * 用户报道操作
+ * 
  * @author zhangsong
  *
  */
@@ -55,7 +56,8 @@ public class ReportHandler extends AbstractHandler {
 
         Session ses = JsonUtils.fromJson(pro.getBody(), Session.class);
         ses = sessionService.createSession(ses.getSesId());
-        LOG.debug("ReportHandler [BackId: {}, SesId: {}]", back.getBackId(), ses.getSesId());
+        LOG.debug("ReportHandler [BackId: {}, SesId: {}]", back.getBackId(),
+                ses.getSesId());
 
         Result<Session> res = new Result<Session>();
         res.setData(ses);
