@@ -1,9 +1,0 @@
-server:
-  tcp:
-    port: 9090
-  websocket:
-    port: 8090
-
-logging:
-  level:
-    songm.sso: DEBUG
