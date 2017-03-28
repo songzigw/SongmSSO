@@ -1,5 +1,6 @@
 package cn.songm.sso.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,12 @@ public class SongmSSOServiceTest {
     @Test
     public void testReport() {
         Session ses = songmSSOService.report(null);
-        System.out.print(ses);
+        if (ses == null) {
+            Assert.fail();
+        }
+        Session ses2 = songmSSOService.report(ses.getSesId());
+        Assert.assertEquals(ses.getSesId(), ses2.getSesId());
+        songmSSOService.logout(ses.getSesId());
     }
 
-    @Test
-    public void testGet() {
-        Session ses = songmSSOService.report("6UI28LCT3QRBK38CUUJGZON7Q0BZ");
-        System.out.print(ses);
-    }
 }
