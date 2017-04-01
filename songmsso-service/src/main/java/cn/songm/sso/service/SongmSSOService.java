@@ -79,4 +79,6 @@ public interface SongmSSOService {
      * @return
      */
     public String getValidateCode(String sessionId);
+    
+    public String getUserInfo(String sessionId);
 }

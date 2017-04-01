@@ -55,4 +55,13 @@ public class SongmSSOServiceImpl implements SongmSSOService {
         }
     }
 
+    @Override
+    public String getUserInfo(String sessionId) {
+        Attribute attr = sessionService.getAttr(sessionId, Attribute.KEY_LOGIN);
+        if (attr == null) {
+            return null;
+        } else {
+            return attr.getValue();
+        }
+    }
 }
