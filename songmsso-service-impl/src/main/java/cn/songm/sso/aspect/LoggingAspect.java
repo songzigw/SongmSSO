@@ -7,6 +7,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 日志记录切面
+ * @author zhangsong
+ *
+ */
 public class LoggingAspect {
 
     private static final Logger LOG = LoggerFactory
