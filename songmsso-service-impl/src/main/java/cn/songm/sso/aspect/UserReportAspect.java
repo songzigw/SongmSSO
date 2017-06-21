@@ -30,7 +30,7 @@ public class UserReportAspect {
             public Message createMessage(javax.jms.Session s)
                     throws JMSException {
                 return s.createTextMessage(
-                        JsonUtils.toJson(result, Session.class));
+                        JsonUtils.getInstance().toJson(result, Session.class));
             }
         });
     }
