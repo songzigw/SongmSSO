@@ -9,56 +9,49 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Repository;
 
 import cn.songm.common.redis.BaseRedisImpl;
 import cn.songm.common.utils.SerializeUtil;
 import cn.songm.sso.entity.Session;
-import cn.songm.sso.redis.Database.SessionF;
-import cn.songm.sso.redis.Database.SsoTabs;
 import cn.songm.sso.redis.SessionRedis;
 
 @Repository("sessionRedis")
-public class SessionRedisImpl extends BaseRedisImpl implements SessionRedis {
+public class SessionRedisImpl extends BaseRedisImpl<Session>
+        implements SessionRedis {
 
-    protected RedisSerializer<String> getSerializer() {
-        return redisTemplate.getStringSerializer();
-    }
+    public static final String H_SES_ID_KEY = "h_ses/%s";
+    public static final byte[] SES_FIELD_SESID = "ses_id".getBytes();
+    public static final byte[] SES_FIELD_USER_ID = "user_id".getBytes();
+    public static final byte[] SES_FIELD_CREATED = "created".getBytes();
+    public static final byte[] SES_FIELD_ACCESS = "access".getBytes();
 
-    private String getRedisKey(String sesId) {
-        return SsoTabs.SSO_SESSION + "/" + sesId;
-    }
+//    protected RedisSerializer<String> getSerializer() {
+//        return redisTemplate.getStringSerializer();
+//    }
 
-    private Session serialize(Session ses, RedisConnection connection) {
+    public Session serialize(Session ses, RedisConnection connection) {
         Map<byte[], byte[]> d = new HashMap<byte[], byte[]>();
-        d.put(SessionF.SES_ID.name().getBytes(), ses.getSesId().getBytes());
-        if (ses.getUserId() != null) {
-            d.put(SessionF.USER_ID.name().getBytes(),
-                    ses.getUserId().getBytes());
-        }
-        d.put(SessionF.CREATED.name().getBytes(),
-                SerializeUtil.serialize(ses.getCreated()));
-        d.put(SessionF.ACCESS.name().getBytes(),
-                SerializeUtil.serialize(ses.getAccess()));
 
-        connection.hMSet(getRedisKey(ses.getSesId()).getBytes(), d);
-        // connection.expire(getRedisKey(ses.getSesId()).getBytes(),
-        // Session.TIME_OUT);
-        redisTemplate.expire(getRedisKey(ses.getSesId()), Session.TIME_OUT,
-                TimeUnit.MILLISECONDS);
+        d.put(SES_FIELD_SESID, ses.getSesId().getBytes());
+        if (ses.getUserId() != null) {
+            d.put(SES_FIELD_USER_ID, ses.getUserId().getBytes());
+        }
+        d.put(SES_FIELD_CREATED, SerializeUtil.serialize(ses.getCreated()));
+        d.put(SES_FIELD_ACCESS, SerializeUtil.serialize(ses.getAccess()));
+
+        String key = format(H_SES_ID_KEY, ses.getSesId());
+        connection.hMSet(key.getBytes(), d);
+
+        redisTemplate.expire(key, Session.TIME_OUT, TimeUnit.MILLISECONDS);
         return ses;
     }
 
-    private Session unserialize(String sesId, RedisConnection connection) {
-        if (!connection.exists(getRedisKey(sesId).getBytes())) {
-            return null;
-        }
-        List<byte[]> vals = connection.hMGet(getRedisKey(sesId).getBytes(),
-                SessionF.USER_ID.name().getBytes(),
-                SessionF.CREATED.name().getBytes(),
-                SessionF.ACCESS.name().getBytes());
-        Session ses = new Session(sesId);
+    public Session unserialize(Session ses, RedisConnection connection) {
+        String key = format(H_SES_ID_KEY, ses.getSesId());
+        if (!connection.exists(key.getBytes())) return null;
+        List<byte[]> vals = connection.hMGet(key.getBytes(), SES_FIELD_USER_ID,
+                SES_FIELD_CREATED, SES_FIELD_ACCESS);
         if (vals.get(0) != null) {
             ses.setUserId(new String(vals.get(0)));
         }
@@ -84,26 +77,27 @@ public class SessionRedisImpl extends BaseRedisImpl implements SessionRedis {
             @Override
             public Session doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                return unserialize(sesId, connection);
+                Session ses = new Session(sesId);
+                return unserialize(ses, connection);
             }
         });
     }
 
     @Override
     public void delById(String sesId) {
-        redisTemplate.delete(getRedisKey(sesId));
+        redisTemplate.delete(format(H_SES_ID_KEY, sesId));
     }
 
     @Override
     public void updateAccess(String sesId) {
+        String key = format(H_SES_ID_KEY, sesId);
         redisTemplate.execute(new RedisCallback<Long>() {
             @Override
             public Long doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                if (connection.hSet(getRedisKey(sesId).getBytes(),
-                        SessionF.ACCESS.name().getBytes(),
+                if (connection.hSet(key.getBytes(), SES_FIELD_ACCESS,
                         SerializeUtil.serialize(new Date()))) {
-                    redisTemplate.expire(getRedisKey(sesId), Session.TIME_OUT,
+                    redisTemplate.expire(key, Session.TIME_OUT,
                             TimeUnit.MILLISECONDS);
                     return 1l;
                 } else {
@@ -115,12 +109,12 @@ public class SessionRedisImpl extends BaseRedisImpl implements SessionRedis {
 
     @Override
     public void updateUserId(String sesId, String userId) {
+        String key = format(H_SES_ID_KEY, sesId);
         redisTemplate.execute(new RedisCallback<Long>() {
             @Override
             public Long doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                if (connection.hSet(getRedisKey(sesId).getBytes(),
-                        SessionF.USER_ID.name().getBytes(),
+                if (connection.hSet(key.getBytes(), SES_FIELD_USER_ID,
                         userId.getBytes())) {
                     return 1l;
                 } else {

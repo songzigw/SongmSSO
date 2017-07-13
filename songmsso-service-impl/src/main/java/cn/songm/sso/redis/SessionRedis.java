@@ -3,7 +3,7 @@ package cn.songm.sso.redis;
 import cn.songm.common.redis.BaseRedis;
 import cn.songm.sso.entity.Session;
 
-public interface SessionRedis extends BaseRedis {
+public interface SessionRedis extends BaseRedis<Session> {
 
     /**
      * 插入Session数据

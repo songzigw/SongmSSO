@@ -14,44 +14,39 @@ import cn.songm.common.redis.BaseRedisImpl;
 import cn.songm.sso.entity.Attribute;
 import cn.songm.sso.entity.Session;
 import cn.songm.sso.redis.AttributeRedis;
-import cn.songm.sso.redis.Database.SsoTabs;
 
 @Repository("attributeRedis")
-public class AttributeRedisImpl extends BaseRedisImpl
+public class AttributeRedisImpl extends BaseRedisImpl<Attribute>
         implements AttributeRedis {
+
+    private static final String SES_ID_ATTR = "ses_id/%s/attr";
 
     protected RedisSerializer<String> getSerializer() {
         return redisTemplate.getStringSerializer();
     }
 
-    private String getRedisKey(String sesId) {
-        StringBuilder sbui = new StringBuilder();
-        sbui.append(SsoTabs.SSO_SESSION).append("/").append(sesId).append("/")
-                .append(SsoTabs.SSO_ATTRIBUTE);
-        return sbui.toString();
-    }
-
-    private Attribute serialize(Attribute attr, RedisConnection connection) {
-        Map<byte[], byte[]> d = new HashMap<byte[], byte[]>();
-        d.put(attr.getKey().getBytes(), attr.getValue().getBytes());
-
-        connection.hMSet(getRedisKey(attr.getSesId()).getBytes(), d);
-        redisTemplate.expire(getRedisKey(attr.getSesId()), Session.TIME_OUT,
-                TimeUnit.MILLISECONDS);
+    public Attribute serialize(Attribute attr, RedisConnection connection) {
+        String key = format(SES_ID_ATTR, attr.getSesId());
+        if (connection.exists(key.getBytes())) {
+            connection.hSet(key.getBytes(), attr.getKey().getBytes(),
+                    attr.getValue().getBytes());
+        } else {
+            Map<byte[], byte[]> d = new HashMap<byte[], byte[]>();
+            d.put(attr.getKey().getBytes(), attr.getValue().getBytes());
+            connection.hMSet(key.getBytes(), d);
+        }
+        redisTemplate.expire(key, Session.TIME_OUT, TimeUnit.MILLISECONDS);
         return attr;
     }
 
-    private Attribute unserialize(String sesId, String key,
-            RedisConnection connection) {
-        if (!connection.exists(getRedisKey(sesId).getBytes())) {
+    public Attribute unserialize(Attribute attr, RedisConnection connection) {
+        String key = format(SES_ID_ATTR, attr.getSesId());
+        if (!connection.exists(key.getBytes())) return null;
+        if (!connection.hExists(key.getBytes(), attr.getKey().getBytes()))
             return null;
-        }
-        if (!connection.hExists(getRedisKey(sesId).getBytes(), key.getBytes())) {
-            return null;
-        }
-        String val = new String(
-                connection.hGet(getRedisKey(sesId).getBytes(), key.getBytes()));
-        return new Attribute(sesId, key, val);
+        attr.setValue(new String(
+                connection.hGet(key.getBytes(), attr.getKey().getBytes())));
+        return attr;
     }
 
     @Override
@@ -60,14 +55,7 @@ public class AttributeRedisImpl extends BaseRedisImpl
             @Override
             public Long doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                if (connection
-                        .exists(getRedisKey(attr.getSesId()).getBytes())) {
-                    connection.hSet(getRedisKey(attr.getSesId()).getBytes(),
-                            attr.getKey().getBytes(),
-                            attr.getValue().getBytes());
-                } else {
-                    serialize(attr, connection);
-                }
+                serialize(attr, connection);
                 return 1l;
             }
         });
@@ -79,7 +67,8 @@ public class AttributeRedisImpl extends BaseRedisImpl
             @Override
             public Attribute doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                return unserialize(sesId, key, connection);
+                Attribute attr = new Attribute(sesId, key, null);
+                return unserialize(attr, connection);
             }
         });
     }
@@ -90,7 +79,7 @@ public class AttributeRedisImpl extends BaseRedisImpl
             @Override
             public Long doInRedis(RedisConnection connection)
                     throws DataAccessException {
-                return connection.hDel(getRedisKey(sesId).getBytes(),
+                return connection.hDel(format(SES_ID_ATTR, sesId).getBytes(),
                         key.getBytes());
             }
         });
@@ -98,12 +87,12 @@ public class AttributeRedisImpl extends BaseRedisImpl
 
     @Override
     public void delAttrsBySesId(String sesId) {
-        redisTemplate.delete(getRedisKey(sesId));
+        redisTemplate.delete(format(SES_ID_ATTR, sesId));
     }
 
     @Override
     public void updateAccess(String sesId) {
-        redisTemplate.expire(getRedisKey(sesId), Session.TIME_OUT,
+        redisTemplate.expire(format(SES_ID_ATTR, sesId), Session.TIME_OUT,
                 TimeUnit.MILLISECONDS);
     }
 

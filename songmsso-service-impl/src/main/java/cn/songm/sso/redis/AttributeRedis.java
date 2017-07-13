@@ -1,8 +1,9 @@
 package cn.songm.sso.redis;
 
+import cn.songm.common.redis.BaseRedis;
 import cn.songm.sso.entity.Attribute;
 
-public interface AttributeRedis {
+public interface AttributeRedis extends BaseRedis<Attribute> {
 
     public void insert(Attribute attr);
     
