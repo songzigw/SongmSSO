@@ -12,10 +12,10 @@ import org.slf4j.LoggerFactory;
  * @author zhangsong
  *
  */
-public class LoggingAspect {
+public class LoggerAspect {
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(LoggingAspect.class);
+            .getLogger(LoggerAspect.class);
 
     public void before(JoinPoint point) {
         String cName = point.getTarget().getClass().getName();

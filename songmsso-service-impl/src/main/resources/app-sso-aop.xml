@@ -9,14 +9,14 @@
 	<!-- 开启aop注解 -->
 	<aop:aspectj-autoproxy />
 
-	<bean id="loggingAspect" class="cn.songm.sso.aspect.LoggingAspect"></bean>
+	<bean id="loggerAspect" class="cn.songm.sso.aspect.LoggerAspect"></bean>
 	<bean id="userReportAspect" class="cn.songm.sso.aspect.UserReportAspect"></bean>
 
 	<aop:config>
-		<aop:aspect ref="loggingAspect">
+		<aop:aspect ref="loggerAspect">
 			<aop:pointcut expression="execution(* cn.songm.sso.service.impl.*.*(..))"
-				id="pointcutLogging" />
-			<aop:around method="around" pointcut-ref="pointcutLogging" />
+				id="pointcutLogger" />
+			<aop:around method="around" pointcut-ref="pointcutLogger" />
 		</aop:aspect>
 		<aop:aspect ref="userReportAspect">
 			<aop:after-returning method="afterReturning"
