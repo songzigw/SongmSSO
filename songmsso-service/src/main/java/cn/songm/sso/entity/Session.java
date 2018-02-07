@@ -34,7 +34,7 @@ public class Session implements Serializable {
     /** 默认超时间 */
     public static final long TIME_OUT = 1000 * 60 * 60 * 24;
 
-    public static final String USER_SESSION_KEY = "songmsso_session";
+    public static final String USER_SESSION_KEY = "songmsso_sessionid";
 
     /** 会话唯一标示 */
     private String sesId;
