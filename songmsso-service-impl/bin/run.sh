@@ -18,7 +18,7 @@ cd ..
 #JDK所在路径
 JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home"
 #需要启动的Java主程序（main方法类）
-APP_MAINCLASS=cn.songm.reseach.aop.App
+APP_MAINCLASS=cn.songm.sso.SSOApplication
  
 #Java程序所在的目录（classes的上一级目录）
 APP_HOME=`pwd`
