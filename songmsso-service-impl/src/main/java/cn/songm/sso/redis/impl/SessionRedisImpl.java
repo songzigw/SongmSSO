@@ -20,11 +20,13 @@ import cn.songm.sso.redis.SessionRedis;
 public class SessionRedisImpl extends BaseRedisImpl<Session>
         implements SessionRedis {
 
-    public static final String H_SES_ID_KEY = "h_ses/%s";
     public static final byte[] SES_FIELD_SESID = "ses_id".getBytes();
     public static final byte[] SES_FIELD_USER_ID = "user_id".getBytes();
     public static final byte[] SES_FIELD_CREATED = "created".getBytes();
     public static final byte[] SES_FIELD_ACCESS = "access".getBytes();
+    
+    public static final String H_SES_ID_KEY = "h_ses/%s";
+    public static final byte[] L_SESSION_KEY = "l_session".getBytes();
 
 //    protected RedisSerializer<String> getSerializer() {
 //        return redisTemplate.getStringSerializer();
@@ -66,6 +68,8 @@ public class SessionRedisImpl extends BaseRedisImpl<Session>
             @Override
             public Session doInRedis(RedisConnection connection)
                     throws DataAccessException {
+                //connection.lPush(L_SESSION_KEY, session.getSesId().getBytes());
+                //connection.expire(L_SESSION_KEY, Session.TIME_OUT);
                 return serialize(session, connection);
             }
         });
