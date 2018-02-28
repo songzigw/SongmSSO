@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.sso.entity.Session;
 
@@ -29,8 +32,11 @@ public class UserReportAspect {
             @Override
             public Message createMessage(javax.jms.Session s)
                     throws JMSException {
-                return s.createTextMessage(
-                        JsonUtils.getInstance().toJson(result, Session.class));
+                String str = JsonUtils.getInstance().toJson(result, Session.class);
+                JsonObject jObj = new JsonParser().parse(str).getAsJsonObject();
+                Object[] objs = point.getArgs();
+                //jObj.addProperty("url", objs[1].toString());
+                return s.createTextMessage(jObj.toString());
             }
         });
     }
