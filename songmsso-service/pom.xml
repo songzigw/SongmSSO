@@ -6,9 +6,10 @@
 	<parent>
 		<groupId>cn.songm.sso</groupId>
 		<artifactId>SongmSSO</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 	<artifactId>songmsso-service</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<name>${project.artifactId}</name>
 	<url>http://maven.apache.org</url>
