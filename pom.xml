@@ -42,27 +42,27 @@
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-utils</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-beans</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-mq</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-redis</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-service</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>0.1</version>
             </dependency>
 
             <dependency>
