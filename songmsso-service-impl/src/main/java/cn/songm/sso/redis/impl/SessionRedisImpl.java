@@ -25,7 +25,7 @@ public class SessionRedisImpl extends BaseRedisImpl<Session>
     public static final byte[] SES_FIELD_CREATED = "created".getBytes();
     public static final byte[] SES_FIELD_ACCESS = "access".getBytes();
     
-    public static final String H_SES_ID_KEY = "h_ses/%s";
+    public static final String H_SES_ID_KEY = "h_session/%s";
     public static final byte[] L_SESSION_KEY = "l_session".getBytes();
 
 //    protected RedisSerializer<String> getSerializer() {
@@ -58,7 +58,7 @@ public class SessionRedisImpl extends BaseRedisImpl<Session>
             ses.setUserId(new String(vals.get(0)));
         }
         ses.setCreated((Date) SerializeUtil.unserialize(vals.get(1)));
-        ses.setAccess((Date) SerializeUtil.unserialize(vals.get(2)));
+        ses.setAccess((Long) SerializeUtil.unserialize(vals.get(2)));
         return ses;
     }
 

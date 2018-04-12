@@ -20,8 +20,12 @@
 			<artifactId>songm-common-utils</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>cn.songm.common</groupId>
+			<artifactId>songm-common-beans</artifactId>
+		</dependency>
+		<dependency>
             <groupId>cn.songm.common</groupId>
-            <artifactId>songm-common-mq</artifactId>
+            <artifactId>songm-common-dao</artifactId>
         </dependency>
 		<dependency>
             <groupId>cn.songm.common</groupId>
@@ -31,6 +35,10 @@
 			<groupId>cn.songm.common</groupId>
 			<artifactId>songm-common-service</artifactId>
 		</dependency>
+		<dependency>
+            <groupId>cn.songm.common</groupId>
+            <artifactId>songm-common-mq</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>cn.songm.sso</groupId>

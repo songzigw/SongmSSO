@@ -16,13 +16,13 @@ import com.google.gson.JsonParser;
 import cn.songm.common.utils.JsonUtils;
 import cn.songm.sso.entity.Session;
 
-public class UserReportAspect {
+public class ReportAspect {
 
     @Autowired
     private JmsTemplate jmsTemplate;
 
     private static final Logger LOG = LoggerFactory
-            .getLogger(UserReportAspect.class);
+            .getLogger(ReportAspect.class);
 
     public void afterReturning(JoinPoint point, Session result) {
         String cName = point.getTarget().getClass().getName();
@@ -34,7 +34,7 @@ public class UserReportAspect {
                     throws JMSException {
                 String str = JsonUtils.getInstance().toJson(result, Session.class);
                 JsonObject jObj = new JsonParser().parse(str).getAsJsonObject();
-                Object[] objs = point.getArgs();
+                //Object[] objs = point.getArgs();
                 //jObj.addProperty("url", objs[1].toString());
                 return s.createTextMessage(jObj.toString());
             }

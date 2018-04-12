@@ -16,7 +16,6 @@
  */
 package cn.songm.sso.service;
 
-import cn.songm.sso.entity.Attribute;
 import cn.songm.sso.entity.Session;
 
 /**
@@ -50,12 +49,34 @@ public interface SongmSSOService {
     public void logout(String sessionId);
     
     /**
+     * 获取用户信息
+     * @param sessionId
+     * @return
+     */
+    public String getUserInfo(String sessionId);
+    
+    /**
+     * 获取用户ID
+     * @param sessionId
+     * @return
+     */
+    public String getUserId(String sessionId);
+    
+    /**
+     * 编辑用户信息
+     * @param sessionId
+     * @param userInfo
+     */
+    public void editUserInfo(String sessionId, String userInfo);
+    
+    /**
      * 设置Session中保存的属性
      * @param sessionId
      * @param key
      * @param value
+     * @param expires
      */
-    public void setSessionAttr(String sessionId, String key, String value);
+    public void setSessionAttr(String sessionId, String key, String value, long expires);
     
     /**
      * 获取Session中保存的属性
@@ -63,7 +84,7 @@ public interface SongmSSOService {
      * @param key
      * @return
      */
-    public Attribute getSessionAttr(String sessionId, String key);
+    public String getSessionAttr(String sessionId, String key);
     
     /**
      * 设置一个普通的验证码
@@ -80,5 +101,4 @@ public interface SongmSSOService {
      */
     public String getValidateCode(String sessionId);
     
-    public String getUserInfo(String sessionId);
 }

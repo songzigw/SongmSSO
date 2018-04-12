@@ -51,7 +51,7 @@
             </dependency>
             <dependency>
                 <groupId>cn.songm.common</groupId>
-                <artifactId>songm-common-mq</artifactId>
+                <artifactId>songm-common-dao</artifactId>
                 <version>0.1</version>
             </dependency>
             <dependency>
@@ -62,6 +62,11 @@
             <dependency>
                 <groupId>cn.songm.common</groupId>
                 <artifactId>songm-common-service</artifactId>
+                <version>0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.songm.common</groupId>
+                <artifactId>songm-common-mq</artifactId>
                 <version>0.1</version>
             </dependency>
 

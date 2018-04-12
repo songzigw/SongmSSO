@@ -19,5 +19,13 @@
 	       <groupId>cn.songm.common</groupId>
 	       <artifactId>songm-common-utils</artifactId>
 	   </dependency>
+	   <dependency>
+	       <groupId>cn.songm.common</groupId>
+	       <artifactId>songm-common-beans</artifactId>
+	   </dependency>
+	   <dependency>
+           <groupId>cn.songm.common</groupId>
+           <artifactId>songm-common-service</artifactId>
+       </dependency>
 	</dependencies>
 </project>

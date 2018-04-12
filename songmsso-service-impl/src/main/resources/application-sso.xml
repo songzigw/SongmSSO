@@ -9,6 +9,7 @@
 
     <import resource="app-sso-aop.xml"/>
     <import resource="app-sso-provider.xml"/>
+    <import resource="app-sso-mybatis.xml"/>
     <import resource="app-sso-redis.xml"/>
     <import resource="app-sso-jms.xml"/>
 </beans>

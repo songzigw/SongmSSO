@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.songm.sso.dao.impl.SessionDaoImpl">
+    <resultMap id="BaseResultMap" type="cn.songm.sso.entity.Session">
+        <id column="ses_id" property="sesId" jdbcType="VARCHAR" />
+        <!-- <result column="no" property="no" jdbcType="VARCHAR" /> -->
+        <result column="version" property="version" jdbcType="INTEGER" />
+        <result column="created" property="created" jdbcType="TIMESTAMP" />
+        <result column="updated" property="updated" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="access" property="access" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="user_info" property="userInfo" jdbcType="VARCHAR" />
+        <result column="attribute" property="attribute" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="table_name"> sso_session </sql>
+
+    <sql id="Base_Column_List">
+        <!-- no, --> version, created, updated, remark, ses_id, access, user_id, user_info, attribute
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap"
+        parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        where ses_id = #{id, jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from
+        <include refid="table_name" />
+        where ses_id = #{id, jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="cn.songm.sso.entity.Session">
+        insert into
+        <include refid="table_name" />
+       (<include refid="Base_Column_List" />)
+        values
+       (<!-- #{no,jdbcType=VARCHAR}, -->
+        #{version,jdbcType=INTEGER},
+        #{created,jdbcType=TIMESTAMP},
+        #{updated,jdbcType=TIMESTAMP},
+        #{remark,jdbcType=VARCHAR},
+        #{sesId,jdbcType=VARCHAR},
+        #{access,jdbcType=BIGINT},
+        #{userId, jdbcType=VARCHAR},
+        #{userInfo, jdbcType=VARCHAR},
+        #{attribute, jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.songm.sso.entity.Session">
+        update
+        <include refid="table_name" />
+        set updated = #{updated,jdbcType=TIMESTAMP}, version = version + 1
+        <if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
+        <if test="access != null">, access = #{access,jdbcType=BIGINT}</if>
+        <if test="userId != null">, user_id = #{userId,jdbcType=VARCHAR}</if>
+        <if test="userInfo != null">, user_info = #{userInfo,jdbcType=VARCHAR}</if>
+        <if test="attribute != null">, attribute = #{attribute,jdbcType=VARCHAR}</if>
+        where ses_id = #{sesId, jdbcType=VARCHAR}
+    </update>
+    <!-- 根据搜索条件获取数据 -->
+    <sql id="condition_sql">
+        <!-- Equal query -->
+        <if
+            test="beginDate != null and endDate != null and endDate !='' and beginDate != ''">
+            and created between #{beginDate} and CONCAT(#{endDate},'23:59:59')
+        </if>
+        <if test="sesId != null and sesId !=''"> and ses_id = #{sesId,jdcbType=VARCHAR}</if>
+        <!-- 是否行锁，要放在查询条件最后 -->
+        <if test="isPessimist != null and isPessimist == true "> for update</if>
+    </sql>
+
+    <select id="listBy" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        order by created desc
+    </select>
+    
+    <select id="listByColumn" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        order by created desc
+    </select>
+    
+    <select id="countByColumn" parameterType="java.util.Map" resultType="java.lang.Long">
+        select count(1) from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="listPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+        order by created desc limit #{pageFirst}, #{pageSize}
+    </select>
+
+    <!-- 分页查询时要用到的总数统计 -->
+    <select id="listPageCount" parameterType="java.util.Map"
+        resultType="java.lang.Long">
+        select count(1) from
+        <include refid="table_name" />
+        <where>
+            <include refid="condition_sql" />
+        </where>
+    </select>
+
+    <select id="getSeqNextValue" resultType="java.lang.Long">
+        select FUN_SEQ ('sso_session_id_seq')
+    </select>
+</mapper>

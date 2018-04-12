@@ -16,8 +16,7 @@
  */
 package cn.songm.sso.entity;
 
-import java.io.Serializable;
-import java.util.Date;
+import cn.songm.common.beans.Entity;
 
 /**
  * 用户与服务端的会话
@@ -27,7 +26,7 @@ import java.util.Date;
  * @version 0.1
  * 
  */
-public class Session implements Serializable {
+public class Session extends Entity {
 
     private static final long serialVersionUID = 1689305158269907021L;
 
@@ -39,39 +38,25 @@ public class Session implements Serializable {
     /** 会话唯一标示 */
     private String sesId;
 
-    /** 用户ID */
-    private String userId;
-
-    /** 会话创建时间 */
-    private Date created;
-
     /** 会话访问时间 */
-    private Date access;
+    private Long access;
+    
+    /** 用户id */
+    private String userId;
+    
+    /** 用户信息（JSON） */
+    private String userInfo;
+    
+    /** 属性 [{key:XXX, value:XX, created: 123456789, expires: 1000}] */
+    private String attribute;
 
+    public Session() {
+    }
+    
     public Session(String sesId) {
+        this.init();
+        access = this.getCreated().getTime();
         this.sesId = sesId;
-        created = new Date();
-        access = created;
-    }
-
-    public String getSesId() {
-        return sesId;
-    }
-
-    public void setSesId(String sesId) {
-        this.sesId = sesId;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public void setAccess(Date access) {
-        this.access = access;
-    }
-
-    public Date getCreated() {
-        return created;
     }
 
     public String getUserId() {
@@ -82,12 +67,40 @@ public class Session implements Serializable {
         this.userId = userId;
     }
 
-    public Date getAccess() {
+    public String getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(String userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public String getSesId() {
+        return sesId;
+    }
+
+    public void setSesId(String sesId) {
+        this.sesId = sesId;
+    }
+
+    public void setAccess(Long access) {
+        this.access = access;
+    }
+
+    public Long getAccess() {
         return access;
     }
 
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
+
     public boolean isTimeout() {
-        if (System.currentTimeMillis() - access.getTime() > TIME_OUT) {
+        if (System.currentTimeMillis() - access > TIME_OUT) {
             return true;
         }
         return false;
@@ -115,7 +128,16 @@ public class Session implements Serializable {
 
     @Override
     public String toString() {
-        return "Session [sesId=" + sesId + ", userId=" + userId + ", created="
-                + created + ", access=" + access + "]";
+        StringBuilder sBui = new StringBuilder();
+        sBui.append("Session [").append(super.toString());
+        sBui.append(", sesId=").append(sesId);
+        sBui.append(", access=").append(access);
+        sBui.append(", userId=").append(userId);
+        sBui.append(", userInfo=").append(userInfo);
+        sBui.append(", attribute=").append(attribute)
+        .append("]");
+        
+        return sBui.toString();
     }
+    
 }
