@@ -49,7 +49,12 @@ public class SongmSSOServiceTest {
         }
         Session ses2 = songmSSOService.report(ses.getSesId());
         Assert.assertEquals(ses.getSesId(), ses2.getSesId());
-        songmSSOService.logout(ses.getSesId());
+        //songmSSOService.logout(ses.getSesId());
     }
 
+    
+    @Test
+    public void testSetValidateCode() {
+        songmSSOService.setValidateCode("88PCDC5KJ4MMCMXBUYDJLJ8JAK5V", "897X");
+    }
 }
