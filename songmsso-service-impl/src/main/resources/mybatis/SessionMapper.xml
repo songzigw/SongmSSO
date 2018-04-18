@@ -60,6 +60,15 @@
         <if test="attribute != null">, attribute = #{attribute,jdbcType=VARCHAR}</if>
         where ses_id = #{sesId, jdbcType=VARCHAR}
     </update>
+    
+    <update id="updateByUserId" parameterType="java.util.Map">
+        update
+        <include refid="table_name" />
+        set updated = #{updated,jdbcType=TIMESTAMP}, version = version + 1
+        <if test="userInfo != null">, user_info = #{userInfo,jdbcType=VARCHAR}</if>
+        where user_id = #{userId, jdbcType=VARCHAR}
+    </update>
+    
     <!-- 根据搜索条件获取数据 -->
     <sql id="condition_sql">
         <!-- Equal query -->

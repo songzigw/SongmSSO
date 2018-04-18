@@ -63,13 +63,6 @@ public interface SongmSSOService {
     public String getUserId(String sessionId);
     
     /**
-     * 编辑用户信息
-     * @param sessionId
-     * @param userInfo
-     */
-    public void editUserInfo(String sessionId, String userInfo);
-    
-    /**
      * 设置Session中保存的属性
      * @param sessionId
      * @param key
@@ -87,6 +80,12 @@ public interface SongmSSOService {
     public String getSessionAttr(String sessionId, String key);
     
     /**
+     * 删除Session中保存的属性
+     * @param sessionId
+     */
+    public void delSessionAttr(String sessionId, String key);
+    
+    /**
      * 设置一个普通的验证码
      * @param sessionId
      * @param vcode
@@ -101,4 +100,10 @@ public interface SongmSSOService {
      */
     public String getValidateCode(String sessionId);
     
+    /**
+     * 删除一个普通的验证码
+     * @param sessionId
+     * @return
+     */
+    public void delValidateCode(String sessionId);
 }

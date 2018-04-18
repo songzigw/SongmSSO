@@ -5,4 +5,5 @@ import cn.songm.sso.entity.Session;
 
 public interface SessionDao extends BaseDao<Session> {
 
+    public int updateUserByUid(String userId, String userInfo);
 }

@@ -27,7 +27,7 @@ public class SongmSSOServiceImpl implements SongmSSOService {
     @Autowired
     private SessionDao sessionDao;
 
-    private Session getSession(String sesId) {
+    private Session getSession(String sesId, boolean isAccess) {
         if (StringUtils.isEmpty(sesId)) return null;
         
         Session ses = sessionDao.selectOneById(sesId);
@@ -38,17 +38,20 @@ public class SongmSSOServiceImpl implements SongmSSOService {
             return null;
         }
         
-        ses.setAccess(new Date().getTime());
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("sesId", ses.getSesId());
-        paramMap.put("access", ses.getAccess());
-        sessionDao.update(paramMap);
+        if (isAccess) {
+            ses.setAccess(new Date().getTime());
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("sesId", ses.getSesId());
+            paramMap.put("access", ses.getAccess());
+            sessionDao.update(paramMap);
+        }
+        
         return ses;
     }
     
     @Override
     public Session report(String sessionId) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, true);
         if (ses != null) return ses;
         
         return createSession();
@@ -62,7 +65,7 @@ public class SongmSSOServiceImpl implements SongmSSOService {
     
     @Override
     public Session login(String sessionId, String userId, String userInfo) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, false);
         if (ses == null) {
             ses = createSession();
         }
@@ -79,29 +82,21 @@ public class SongmSSOServiceImpl implements SongmSSOService {
 
     @Override
     public String getUserInfo(String sessionId) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, false);
         if (ses != null) return ses.getUserInfo();
         return null;
     }
     
     @Override
     public String getUserId(String sessionId) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, false);
         if (ses != null) return ses.getUserId();
         return null;
     }
 
     @Override
-    public void editUserInfo(String sessionId, String userInfo) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("sesId", sessionId);
-        paramMap.put("userInfo", userInfo);
-        sessionDao.update(paramMap);
-    }
-
-    @Override
     public void setSessionAttr(String sessionId, String key, String value, long expires) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, false);
         if (ses == null) return;
         String attr = ses.getAttribute();
         JsonArray attrJArr = null;
@@ -142,7 +137,7 @@ public class SongmSSOServiceImpl implements SongmSSOService {
 
     @Override
     public String getSessionAttr(String sessionId, String key) {
-        Session ses = getSession(sessionId);
+        Session ses = getSession(sessionId, false);
         if (ses == null) return null;
         String attr = ses.getAttribute();
         LOG.debug("SessionAttr, sessionId: {}, {}", sessionId, attr);
@@ -165,6 +160,38 @@ public class SongmSSOServiceImpl implements SongmSSOService {
         return null;
     }
 
+    @Override
+    public void delSessionAttr(String sessionId, String key) {
+        Session ses = getSession(sessionId, false);
+        if (ses == null) return;
+        String attr = ses.getAttribute();
+        JsonArray attrJArr = null;
+        JsonArray newAJArr = new JsonArray();
+        
+        if (StringUtils.isEmpty(attr)) {
+            attrJArr = new JsonArray();
+        } else {
+            attrJArr = new JsonParser().parse(attr).getAsJsonArray();
+        }
+        
+        boolean f = false;
+        for (int i = 0; i < attrJArr.size(); i++) {
+            JsonObject attrJObj = attrJArr.get(i).getAsJsonObject();
+            String k = attrJObj.get("key").getAsString();
+            if (!key.equals(k)) {
+                newAJArr.add(attrJObj);
+            } else {
+                f = true;
+            }
+        }
+        if (f) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("sesId", sessionId);
+            paramMap.put("attribute", newAJArr.toString());
+            sessionDao.update(paramMap);
+        }
+    }
+    
     /** 一般的验证码标识 */
     public static final String KEY_VCODE = "V_CODE";
     /** 一般的验证码超时时间（毫秒） */
@@ -178,6 +205,11 @@ public class SongmSSOServiceImpl implements SongmSSOService {
     @Override
     public String getValidateCode(String sessionId) {
         return getSessionAttr(sessionId, KEY_VCODE);
+    }
+
+    @Override
+    public void delValidateCode(String sessionId) {
+        delSessionAttr(sessionId, KEY_VCODE);
     }
 
 }
