@@ -5,7 +5,7 @@
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<!-- 提供方应用信息，用于计算依赖关系 -->
-	<dubbo:application name="provider-songmsso" />
+	<dubbo:application name="songmsso-service-impl" />
 
 	<!-- 注册中心暴露服务地址 -->
 	<dubbo:registry address="${dubbo.registry.server}" />
@@ -16,5 +16,7 @@
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:service interface="cn.songm.sso.service.SongmSSOService"
 		ref="songmSsoService" timeout="${dubbo.server.timeout}" />
+	<dubbo:service interface="cn.songm.sso.service.SongmUserService"
+        ref="songmUserService" timeout="${dubbo.server.timeout}" />
 
 </beans>
