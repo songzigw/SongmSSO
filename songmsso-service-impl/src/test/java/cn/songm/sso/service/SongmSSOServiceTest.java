@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,6 +20,8 @@ import cn.songm.sso.json.JsonUtilsInit;
 @ContextConfiguration(locations = { "classpath:application-sso.xml" })
 public class SongmSSOServiceTest {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    
     @Autowired
     private SongmSSOService songmSSOService;
 
@@ -56,5 +60,11 @@ public class SongmSSOServiceTest {
     @Test
     public void testSetValidateCode() {
         songmSSOService.setValidateCode("88PCDC5KJ4MMCMXBUYDJLJ8JAK5V", "897X");
+    }
+    
+    @Test
+    public void testGetValidateCode() {
+        String vcode = songmSSOService.getValidateCode("WXVJH5PMC05ZGP59U0FNXX8HQA72");
+        log.info(vcode);
     }
 }

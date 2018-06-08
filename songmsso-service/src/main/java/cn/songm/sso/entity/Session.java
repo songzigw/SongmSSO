@@ -31,9 +31,10 @@ public class Session extends Entity {
     private static final long serialVersionUID = 1689305158269907021L;
 
     /** 默认超时间 */
-    public static final long TIME_OUT = 1000 * 60 * 60 * 24;
+    public static final long TIME_OUT = 1000 * 60 * 60 * 24 * 60;
 
-    public static final String USER_SESSION_KEY = "songmsso_sessionid";
+    public static final String COOKIE_SESSIONID_KEY = "songmsso_sessionid";
+    public static final String HEADER_SESSIONID_KEY = "Songmsso-Sessionid";
 
     /** 会话唯一标示 */
     private String sesId;
