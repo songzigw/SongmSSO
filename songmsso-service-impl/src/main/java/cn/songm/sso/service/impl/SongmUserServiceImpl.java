@@ -1,8 +1,5 @@
 package cn.songm.sso.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +16,6 @@ public class SongmUserServiceImpl implements SongmUserService {
     
     @Override
     public void editUserInfo(String userId, String userInfo) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("userId", userId);
-        paramMap.put("userInfo", userInfo);
-        sessionDao.update(paramMap);
+        sessionDao.updateUserByUid(userId, userInfo);
     }
 }
