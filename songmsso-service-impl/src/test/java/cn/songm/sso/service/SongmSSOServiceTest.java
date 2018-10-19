@@ -64,7 +64,7 @@ public class SongmSSOServiceTest {
     
     @Test
     public void testGetValidateCode() {
-        String vcode = songmSSOService.getValidateCode("WXVJH5PMC05ZGP59U0FNXX8HQA72");
+        String vcode = songmSSOService.getValidateCode("98ENE97NFPAAQ9I8TJ2VCCPO4SCN");
         log.info(vcode);
     }
 }
