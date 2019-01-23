@@ -1,4 +1,4 @@
-JAVA_OPTS="-server -d64 -Xms512M -Xmx512M -Xss128k\
+JAVA_OPTS="-server -d64 -Xms512M -Xmx512M -Xss256k\
  -XX:+AggressiveOpts -XX:AutoBoxCacheMax=20000\
  -XX:+DisableExplicitGC -XX:MaxTenuringThreshold=15\
  -XX:+UseConcMarkSweepGC -XX:+UseParNewGC\
