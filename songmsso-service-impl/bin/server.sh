@@ -239,7 +239,7 @@ echo "****************************"
 #参数取值范围：{start|stop|restart|status|info}
 #如参数不在指定范围之内，则打印帮助信息
 ###################################
-case "$1" in
+case "$1" in 
   'start')   start;;
   'stop')    stop;;
   'restart') stop start;;
