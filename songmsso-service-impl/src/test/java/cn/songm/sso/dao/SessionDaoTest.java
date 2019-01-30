@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import cn.songm.common.utils.Sequence;
 import cn.songm.sso.entity.Session;
+import cn.songm.sso.redis.SessionRedis;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:app-sso-mybatis-test.xml"})
@@ -23,16 +24,35 @@ public class SessionDaoTest {
 
     @Autowired
     private SessionDao sessionDao;
+    @Autowired
+    private SessionRedis sessionRedis;
 
-    @Test
-    public void testInsert() {
-        // SessionId
+    private Session createSession() {
         String sesId = Sequence.getInstance().getSequence(28);
         Session s = new Session(sesId);
         int i = sessionDao.insert(s);
         Assert.assertTrue("会话数据插入不等于1", i == 1);
-        Session s2 = sessionDao.selectOneById(sesId);
-        Assert.assertEquals(s.getSesId(), s2.getSesId());
+        return s;
+    }
+    
+    @Test
+    public void testInsert() {
+        Session s = createSession();
+        Session s2 = sessionDao.selectOneById(s.getSesId());
+        Assert.assertEquals("插入数据前后不一致", s, s2);
+    }
+    
+    @Test
+    public void testSelectOneById() {
+        // 创建Session
+        Session s = createSession();
+        // 从缓存中清除
+        sessionRedis.delById(s.getSesId());
+        // 缓存中没有数据，从数据库中查询，并同步到缓存
+        Session s2 = sessionDao.selectOneById(s.getSesId());
+        Assert.assertEquals(s, s2);
+        Session s3 = sessionRedis.selectById(s.getSesId());
+        Assert.assertEquals(s2, s3);
     }
     
     /**
