@@ -9,7 +9,6 @@
 	<configs>
 		<config>src/main/resources/app-sso-provider.xml</config>
 		<config>src/main/resources/app-sso-redis.xml</config>
-		<config>src/main/resources/app-sso-jms.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

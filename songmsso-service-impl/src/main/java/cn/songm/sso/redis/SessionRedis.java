@@ -17,11 +17,12 @@ public interface SessionRedis extends BaseRedis<Session> {
      * @param sesId
      * @return
      */
-    public Session queryById(String sesId);
+    public Session selectById(String sesId);
     
     public void delById(String sesId);
     
     public void updateAccess(String sesId);
     
     public void updateUserId(String sesId, String userId);
+
 }

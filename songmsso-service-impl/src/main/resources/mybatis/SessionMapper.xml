@@ -10,14 +10,12 @@
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="access" property="access" jdbcType="BIGINT" />
         <result column="user_id" property="userId" jdbcType="VARCHAR" />
-        <result column="user_info" property="userInfo" jdbcType="VARCHAR" />
-        <result column="attribute" property="attribute" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="table_name"> sso_session </sql>
 
     <sql id="Base_Column_List">
-        <!-- no, --> version, created, updated, remark, ses_id, access, user_id, user_info, attribute
+        version, created, updated, remark, ses_id, access, user_id
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap"
         parameterType="java.lang.String">
@@ -32,21 +30,33 @@
         <include refid="table_name" />
         where ses_id = #{id, jdbcType=VARCHAR}
     </delete>
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into
+        <include refid="table_name" />
+       (<include refid="Base_Column_List" />)
+        values
+        <foreach collection ="list" item="ses" separator =",">
+       (#{ses.version,jdbcType=INTEGER},
+        #{ses.created,jdbcType=TIMESTAMP},
+        #{ses.updated,jdbcType=TIMESTAMP},
+        #{ses.remark,jdbcType=VARCHAR},
+        #{ses.sesId,jdbcType=VARCHAR},
+        #{ses.access,jdbcType=BIGINT},
+        #{ses.userId, jdbcType=VARCHAR})
+        </foreach>
+    </insert>
     <insert id="insert" parameterType="cn.songm.sso.entity.Session">
         insert into
         <include refid="table_name" />
        (<include refid="Base_Column_List" />)
         values
-       (<!-- #{no,jdbcType=VARCHAR}, -->
-        #{version,jdbcType=INTEGER},
+       (#{version,jdbcType=INTEGER},
         #{created,jdbcType=TIMESTAMP},
         #{updated,jdbcType=TIMESTAMP},
         #{remark,jdbcType=VARCHAR},
         #{sesId,jdbcType=VARCHAR},
         #{access,jdbcType=BIGINT},
-        #{userId, jdbcType=VARCHAR},
-        #{userInfo, jdbcType=VARCHAR},
-        #{attribute, jdbcType=VARCHAR})
+        #{userId, jdbcType=VARCHAR})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="cn.songm.sso.entity.Session">
@@ -56,17 +66,7 @@
         <if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
         <if test="access != null">, access = #{access,jdbcType=BIGINT}</if>
         <if test="userId != null">, user_id = #{userId,jdbcType=VARCHAR}</if>
-        <if test="userInfo != null">, user_info = #{userInfo,jdbcType=VARCHAR}</if>
-        <if test="attribute != null">, attribute = #{attribute,jdbcType=VARCHAR}</if>
         where ses_id = #{sesId, jdbcType=VARCHAR}
-    </update>
-    
-    <update id="updateByUserId" parameterType="java.util.Map">
-        update
-        <include refid="table_name" />
-        set updated = #{updated,jdbcType=TIMESTAMP}, version = version + 1
-        <if test="userInfo != null">, user_info = #{userInfo,jdbcType=VARCHAR}</if>
-        where user_id = #{userId, jdbcType=VARCHAR}
     </update>
     
     <!-- 根据搜索条件获取数据 -->
@@ -76,7 +76,8 @@
             test="beginDate != null and endDate != null and endDate !='' and beginDate != ''">
             and created between #{beginDate} and CONCAT(#{endDate},'23:59:59')
         </if>
-        <if test="sesId != null and sesId !=''"> and ses_id = #{sesId,jdcbType=VARCHAR}</if>
+        <if test="sesId != null and sesId !=''"> and ses_id = #{sesId,jdbcType=VARCHAR}</if>
+        <if test="userId != null and userId !=''"> and user_id = #{userId,jdbcType=VARCHAR}</if>
         <!-- 是否行锁，要放在查询条件最后 -->
         <if test="isPessimist != null and isPessimist == true "> for update</if>
     </sql>

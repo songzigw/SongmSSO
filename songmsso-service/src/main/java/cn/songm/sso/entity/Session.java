@@ -30,7 +30,7 @@ public class Session extends Entity {
 
     private static final long serialVersionUID = 1689305158269907021L;
 
-    /** 默认超时间 */
+    /** 默认超时间60天（毫秒） */
     public static final long TIME_OUT = 1000 * 60 * 60 * 24 * 60;
 
     public static final String COOKIE_SESSIONID_KEY = "songmsso_sessionid";
@@ -45,12 +45,6 @@ public class Session extends Entity {
     /** 用户id */
     private String userId;
     
-    /** 用户信息（JSON） */
-    private String userInfo;
-    
-    /** 属性 [{key:XXX, value:XX, created: 123456789, expires: 1000}] */
-    private String attribute;
-
     public Session() {
     }
     
@@ -68,14 +62,6 @@ public class Session extends Entity {
         this.userId = userId;
     }
 
-    public String getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(String userInfo) {
-        this.userInfo = userInfo;
-    }
-
     public String getSesId() {
         return sesId;
     }
@@ -90,14 +76,6 @@ public class Session extends Entity {
 
     public Long getAccess() {
         return access;
-    }
-
-    public String getAttribute() {
-        return attribute;
-    }
-
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
     }
 
     public boolean isTimeout() {
@@ -134,9 +112,7 @@ public class Session extends Entity {
         sBui.append(", sesId=").append(sesId);
         sBui.append(", access=").append(access);
         sBui.append(", userId=").append(userId);
-        sBui.append(", userInfo=").append(userInfo);
-        sBui.append(", attribute=").append(attribute)
-        .append("]");
+        sBui.append("]");
         
         return sBui.toString();
     }

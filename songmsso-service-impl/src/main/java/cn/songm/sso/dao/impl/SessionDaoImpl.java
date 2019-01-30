@@ -1,7 +1,7 @@
 package cn.songm.sso.dao.impl;
 
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
@@ -13,14 +13,31 @@ import cn.songm.sso.entity.Session;
 @Repository("sessionDao")
 public class SessionDaoImpl extends BaseDaoImpl<Session> implements SessionDao {
 
-    private static final String SQL_UPDATE_BY_USERID = "updateByUserId";
-    
     @Override
-    public int updateUserByUid(String userId, String userInfo) {
+    public Session selectOneById(Object id) {
+        return super.selectOneById(id);
+    }
+
+    @Override
+    public void updateAccess(String sesId, long access) {
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("updated", new Date());
+        paramMap.put("sesId", sesId);
+        paramMap.put("access", access);
+        this.update(paramMap);
+    }
+
+    @Override
+    public List<Session> selectListByUid(String userId) {
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("userId", userId);
-        paramMap.put("userInfo", userInfo);
-        return sessionTemplate.update(getStatement(SQL_UPDATE_BY_USERID), paramMap);
+        return this.selectListByColumn(paramMap);
+    }
+
+    @Override
+    public void updateUserId(String sesId, String userId) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("sesId", sesId);
+        paramMap.put("userId", userId);
+        this.update(paramMap);
     }
 }
