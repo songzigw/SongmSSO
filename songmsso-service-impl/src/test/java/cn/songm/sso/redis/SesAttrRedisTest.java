@@ -25,7 +25,6 @@ public class SesAttrRedisTest {
         sesAttrRedis.insertAttr(sesId, attrKey, attrVal);
         
         String val = (String)sesAttrRedis.selectAttr(sesId, attrKey);
-        System.out.println(val);
         Assert.assertEquals(val, attrVal);
     }
 }
