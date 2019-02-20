@@ -10,7 +10,6 @@ import cn.songm.sso.redis.SesAttrRedis;
 public class SesAttrRedisImpl extends BaseRedisImpl<Void> implements SesAttrRedis {
 
     public static final String H_SESATTR_KEY = "sso_h_sesattr/%s";
-    public static final String L_USERSES_KEY = "sso_l_userses/%s";
     
     @Override
     public void insertAttr(String sesId, String attrKey, Object attrVal) {

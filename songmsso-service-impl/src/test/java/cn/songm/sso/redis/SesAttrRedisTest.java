@@ -1,5 +1,6 @@
 package cn.songm.sso.redis;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +15,17 @@ public class SesAttrRedisTest {
     private SesAttrRedis sesAttrRedis;
     
     /**
-     * 查询session的属性
-     */
-    @Test
-    public void testSelectAttr() {
-        String sesId = "abcdefghijklmn";
-        String attrKey = "attrk1";
-        Object o = sesAttrRedis.selectAttr(sesId, attrKey);
-    }
-    
-    /**
      * 添加session的属性
      */
     @Test
     public void testInsertAttr() {
-        String sesId = "abcdefghijklmn";
+        String sesId = "abcdefg";
         String attrKey = "attrk1";
         String attrVal = "attrv1";
         sesAttrRedis.insertAttr(sesId, attrKey, attrVal);
+        
+        String val = (String)sesAttrRedis.selectAttr(sesId, attrKey);
+        System.out.println(val);
+        Assert.assertEquals(val, attrVal);
     }
 }

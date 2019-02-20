@@ -75,7 +75,7 @@ public class SSOServiceImpl implements SSOService {
         // 绑定session登入的用户，并且更新缓存
         sessionDao.updateUserId(userId, userId);
         // 用户完整信息之间保存到缓存，不进过数据库
-        userRedis.insertUser(userId, user);
+        userRedis.insert(userId, user);
         return ses;
     }
     
@@ -89,7 +89,7 @@ public class SSOServiceImpl implements SSOService {
     public Object getUser(String sesId) {
         Session ses = getSession(sesId, false);
         if (ses == null) return null;
-        return userRedis.selectUserByUid(ses.getUserId());
+        return userRedis.selectByUid(ses.getUserId());
     }
     
     @Override
@@ -111,7 +111,7 @@ public class SSOServiceImpl implements SSOService {
 
     @Override
     public void editUser(String userId, Object user) {
-        userRedis.insertUser(userId, user);
+        userRedis.insert(userId, user);
     }
 
     @Override

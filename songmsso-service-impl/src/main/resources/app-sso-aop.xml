@@ -22,6 +22,12 @@
     <aop:aspect ref="sessionDaoAspect">
         <aop:around method="selectOneById" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.selectOneById(..))"/>
     </aop:aspect>
+    <aop:aspect ref="sessionDaoAspect">
+        <aop:after-returning method="updateAccess" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.updateAccess(..))"/>
+    </aop:aspect>
+    <aop:aspect ref="sessionDaoAspect">
+        <aop:after-returning method="selectUserId" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.updateUserId(..))"/>
+    </aop:aspect>
   </aop:config>
 
 </beans>

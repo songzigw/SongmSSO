@@ -21,8 +21,8 @@ public interface SessionRedis extends BaseRedis<Session> {
     
     public void delById(String sesId);
     
-    public void updateAccess(String sesId);
+    public void updateAccess(String sesId, Session ses);
     
-    public void updateUserId(String sesId, String userId);
+    public void updateUserId(String sesId, Session ses);
 
 }

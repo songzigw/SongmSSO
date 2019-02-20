@@ -27,5 +27,9 @@
            <groupId>cn.songm.common</groupId>
            <artifactId>songm-common-service</artifactId>
        </dependency>
+       <dependency>
+           <groupId>cn.songm.common</groupId>
+           <artifactId>songm-common-redis</artifactId>
+       </dependency>
 	</dependencies>
 </project>

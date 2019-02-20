@@ -1,5 +1,7 @@
 package cn.songm.sso.redis;
 
+import java.util.Date;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +21,7 @@ public class SessionRedisTest {
     
     @Test
     public void testInsert() {
-        String sesId = Sequence.getInstance().getSequence(28);
+        String sesId = Sequence.getInstance().getSequence(5);
         Session session = new Session(sesId);
         session.init();
         session.setUserId("10000");
@@ -28,13 +30,49 @@ public class SessionRedisTest {
     
     @Test
     public void testSelectById() {
-        String sesId = Sequence.getInstance().getSequence(28);
+        String sesId = Sequence.getInstance().getSequence(5);
         Session session = new Session(sesId);
         session.init();
         session.setUserId("10000");
         sessionRedis.insert(session);
-        Session s2 = sessionRedis.selectById("abcdefg");
-        Assert.assertEquals("保存sesion和查询的不一致", s2, session);
+        
+        Session s2 = sessionRedis.selectById(sesId);
+        Assert.assertEquals("保存sesion和查询的不一致", s2.toString(), session.toString());
+    }
+
+    @Test
+    public void testUpdateAccess() {
+        String sesId = Sequence.getInstance().getSequence(5);
+        Session session = new Session(sesId);
+        session.init();
+        session.setUserId("10000");
+        sessionRedis.insert(session);
+        
+        // 修改
+        session.setAccess(System.currentTimeMillis());
+        session.setVersion(session.getVersion() + 1);
+        session.setUpdated(new Date());
+        sessionRedis.updateAccess(sesId, session);
+        
+        Session s2 = sessionRedis.selectById(sesId);
+        Assert.assertEquals("Session不一致", s2.toString(), session.toString());
     }
     
+    @Test
+    public void testUpdateUserId() {
+        String sesId = Sequence.getInstance().getSequence(5);
+        Session session = new Session(sesId);
+        session.init();
+        session.setUserId("10000");
+        sessionRedis.insert(session);
+        
+        // 修改
+        session.setUserId("20000");
+        session.setVersion(session.getVersion() + 1);
+        session.setUpdated(new Date());
+        sessionRedis.updateUserId(sesId, session);
+        
+        Session s2 = sessionRedis.selectById(sesId);
+        Assert.assertEquals("Session不一致", s2.toString(), session.toString());
+    }
 }

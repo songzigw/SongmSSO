@@ -3,6 +3,7 @@ package cn.songm.sso.aspect;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cn.songm.sso.dao.SessionDao;
 import cn.songm.sso.entity.Session;
 import cn.songm.sso.redis.SessionRedis;
 
@@ -10,6 +11,8 @@ public class SessionDaoAspect {
 
     @Autowired
     private SessionRedis sessionRedis;
+    @Autowired
+    private SessionDao sessionDao;
     
     public Session selectOneById(ProceedingJoinPoint point) throws Throwable {
         Session result = sessionRedis.selectById((String)point.getArgs()[0]);
@@ -22,5 +25,19 @@ public class SessionDaoAspect {
             sessionRedis.insert(result);
         }
         return result;
+    }
+    
+    public void updateAccess(ProceedingJoinPoint point) {
+        String sesId = (String) point.getArgs()[0];
+        Session s = sessionDao.selectOneById(sesId);
+        // 修改缓存
+        sessionRedis.updateAccess(sesId, s);
+    }
+    
+    public void updateUserId(ProceedingJoinPoint point) throws Throwable {
+        String sesId = (String) point.getArgs()[0];
+        Session s = sessionDao.selectOneById(sesId);
+        // 修改缓存
+        sessionRedis.updateUserId(sesId, s);
     }
 }

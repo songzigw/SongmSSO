@@ -1,8 +1,9 @@
 package cn.songm.sso.redis;
 
-import java.io.Serializable;
+import cn.songm.common.beans.EntityAdapter;
+import cn.songm.common.utils.StringUtils;
 
-public class User implements Serializable {
+public class User extends EntityAdapter {
 
     private static final long serialVersionUID = -7388042848753495936L;
 
@@ -14,5 +15,10 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+    @Override
+    public String toString() {
+        return StringUtils.toString(this);
     }
 }

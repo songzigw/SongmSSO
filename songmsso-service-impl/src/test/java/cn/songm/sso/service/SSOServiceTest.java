@@ -18,7 +18,7 @@ import cn.songm.sso.json.JsonUtilsInit;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:application-sso.xml" })
 @Transactional
-public class SongmSSOServiceTest {
+public class SSOServiceTest {
 
     @Autowired
     private SSOService ssoService;

@@ -16,7 +16,12 @@
  */
 package cn.songm.sso.entity;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Field;
+
 import cn.songm.common.beans.Entity;
+import cn.songm.common.redis.annotations.HashField;
+import cn.songm.common.utils.StringUtils;
 
 /**
  * 用户与服务端的会话
@@ -30,19 +35,22 @@ public class Session extends Entity {
 
     private static final long serialVersionUID = 1689305158269907021L;
 
-    /** 默认超时间60天（毫秒） */
-    public static final long TIME_OUT = 1000 * 60 * 60 * 24 * 60;
+    /** 默认超时间60天（秒） */
+    public static final long TIME_OUT = 60 * 60 * 24 * 60;
 
     public static final String COOKIE_SESSIONID_KEY = "songmsso_sessionid";
     public static final String HEADER_SESSIONID_KEY = "Songmsso-Sessionid";
 
     /** 会话唯一标示 */
+    @HashField("ses_id")
     private String sesId;
 
     /** 会话访问时间 */
+    @HashField("access")
     private Long access;
     
     /** 用户id */
+    @HashField("user_id")
     private String userId;
     
     public Session() {
@@ -107,14 +115,18 @@ public class Session extends Entity {
 
     @Override
     public String toString() {
-        StringBuilder sBui = new StringBuilder();
-        sBui.append("Session [").append(super.toString());
-        sBui.append(", sesId=").append(sesId);
-        sBui.append(", access=").append(access);
-        sBui.append(", userId=").append(userId);
-        sBui.append("]");
-        
-        return sBui.toString();
+        return StringUtils.toString(this);
     }
     
+    public static void main(String[] args) {
+        Class<?> clazz = Session.class;
+        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+            Field[] fs = clazz.getDeclaredFields();
+            for (Field f : fs) {
+                if (f.isAnnotationPresent(HashField.class)) {
+                    System.out.println(f.getName());
+                }
+            }
+        }
+    }
 }
