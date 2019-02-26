@@ -23,10 +23,10 @@
         <aop:around method="selectOneById" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.selectOneById(..))"/>
     </aop:aspect>
     <aop:aspect ref="sessionDaoAspect">
-        <aop:after-returning method="updateAccess" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.updateAccess(..))"/>
+        <aop:after-returning method="updateAccess" pointcut="execution(* cn.songm.sso.dao.impl.SessionDaoImpl.updateAccess(..)) and args(sesId)" arg-names="sesId" />
     </aop:aspect>
     <aop:aspect ref="sessionDaoAspect">
-        <aop:after-returning method="selectUserId" pointcut="execution(cn.songm.sso.entity.Session cn.songm.sso.dao.impl.SessionDaoImpl.updateUserId(..))"/>
+        <aop:after-returning method="updateUserId" pointcut="execution(* cn.songm.sso.dao.impl.SessionDaoImpl.updateUserId(..)) and args(sesId)" arg-names="sesId"/>
     </aop:aspect>
   </aop:config>
 

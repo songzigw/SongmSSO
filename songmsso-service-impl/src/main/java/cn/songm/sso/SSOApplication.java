@@ -11,7 +11,7 @@ import cn.songm.sso.json.JsonUtilsInit;
  */
 public class SSOApplication {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         JsonUtilsInit.initialization();
         AppBoot.start("application-sso.xml", args);
     }

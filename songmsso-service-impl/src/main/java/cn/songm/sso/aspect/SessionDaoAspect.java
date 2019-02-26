@@ -27,15 +27,13 @@ public class SessionDaoAspect {
         return result;
     }
     
-    public void updateAccess(ProceedingJoinPoint point) {
-        String sesId = (String) point.getArgs()[0];
+    public void updateAccess(String sesId) {
         Session s = sessionDao.selectOneById(sesId);
         // 修改缓存
         sessionRedis.updateAccess(sesId, s);
     }
     
-    public void updateUserId(ProceedingJoinPoint point) throws Throwable {
-        String sesId = (String) point.getArgs()[0];
+    public void updateUserId(String sesId) throws Throwable {
         Session s = sessionDao.selectOneById(sesId);
         // 修改缓存
         sessionRedis.updateUserId(sesId, s);
