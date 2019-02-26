@@ -125,4 +125,9 @@ public class SSOServiceImpl implements SSOService {
         return null;
     }
 
+    @Override
+    public void delAttr(String sesId, String itemKey) {
+        sesAttrRedis.hdel(sesId, itemKey);
+    }
+
 }

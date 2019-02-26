@@ -70,6 +70,8 @@ public interface SSOService {
      */
     public Object getAttr(String sesId, String itemKey);
     
+    public void delAttr(String sesId, String itemKey);
+    
     /**
      * 编辑用户信息
      * @param sesId

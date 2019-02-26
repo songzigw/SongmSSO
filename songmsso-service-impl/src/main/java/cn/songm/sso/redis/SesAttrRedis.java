@@ -1,6 +1,8 @@
 package cn.songm.sso.redis;
 
-public interface SesAttrRedis {
+import cn.songm.common.redis.BaseRedis;
+
+public interface SesAttrRedis extends BaseRedis<Void> {
 
     public void insertAttr(String sesId, String attrKey, Object attrVal);
 
